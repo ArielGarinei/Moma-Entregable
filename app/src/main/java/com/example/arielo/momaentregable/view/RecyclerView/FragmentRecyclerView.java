@@ -1,6 +1,7 @@
 package com.example.arielo.momaentregable.view.RecyclerView;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,12 +9,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.ResultListener;
 import com.example.arielo.momaentregable.controller.PinturaController;
 import com.example.arielo.momaentregable.controller.adapter.RecyclerViewAdapter;
+import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.model.Pintura;
+import com.example.arielo.momaentregable.view.MainActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -39,10 +48,32 @@ public class FragmentRecyclerView extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         cargarPinturas();
+        leerSimple(getContext());
 
 
 
         return view;
+    }
+    public void leerSimple(final Context context){
+        DatabaseReference mDatabase;
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabase = firebaseDatabase.getReference();
+        DatabaseReference referencePrimerMensaje = mDatabase.child("artists").child("0");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Artist artist = dataSnapshot.getValue(Artist.class);
+                Toast.makeText(context, artist.toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        referencePrimerMensaje.addListenerForSingleValueEvent(valueEventListener);
     }
 
     public void  cargarPinturas(){

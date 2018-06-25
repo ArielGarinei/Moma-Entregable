@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "560700197104",
+    "firebase_url": "https://moma-entregable-d413c.firebaseio.com",
+    "project_id": "moma-entregable-d413c",
+    "storage_bucket": "moma-entregable-d413c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560700197104:android:dfe9fe1fe03b3fa2",
+        "android_client_info": {
+          "package_name": "com.example.arielo.momaentregable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560700197104-n41nc7ppea19rd9j05jl3csav1j8hour.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arielo.momaentregable",
+            "certificate_hash": "3aed8d376576a1bca7ba82dcaa512adc49c2699d"
+          }
+        },
+        {
+          "client_id": "560700197104-idptau7ujd0hlejsp1cq0ckn0euha6ve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arielo.momaentregable",
+            "certificate_hash": "6c870cdbe871fef34410816af49b638813c9e6b3"
+          }
+        },
+        {
+          "client_id": "560700197104-5sovcja2ti60l5qck5sdap2b9mhtm9j1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD83W8TqZ4iC4jgC1fGcZmn3XgO4WK4-ac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560700197104-5sovcja2ti60l5qck5sdap2b9mhtm9j1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
