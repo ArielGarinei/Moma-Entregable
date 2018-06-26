@@ -17,7 +17,6 @@ import com.example.arielo.momaentregable.controller.PinturaController;
 import com.example.arielo.momaentregable.controller.adapter.RecyclerViewAdapter;
 import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.model.Pintura;
-import com.example.arielo.momaentregable.view.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -23,7 +23,7 @@ public class DAO_PinturaRetrofit {
     private  ServicePintura servicePintura;
 
     public DAO_PinturaRetrofit() {
-        baseURL = "https://api.myjson.com/bins/x858r/";
+        baseURL = "https://api.myjson.com";
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseURL)
                 .addConverterFactory(GsonConverterFactory.create())
