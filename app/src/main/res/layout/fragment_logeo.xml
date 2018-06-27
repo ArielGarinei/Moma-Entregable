@@ -13,8 +13,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="400dp"
         android:layout_marginBottom="30dp" />
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="25dp"
+            android:text="LogeoTrucho"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:background="#d50000"
+            android:id="@+id/logeoTrucho"/>
+
+    </android.support.v7.widget.CardView>
 
 
 

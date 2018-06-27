@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.Pintura;
 
@@ -22,6 +23,7 @@ import java.util.zip.Inflater;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter{
     private List<Pintura> pinturaList;
+    private Context context;
 
     public RecyclerViewAdapter(List<Pintura> pinturaList) {
         this.pinturaList = pinturaList;
@@ -30,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater  layoutInflater = LayoutInflater.from(context);
         View celda = layoutInflater.inflate(R.layout.celda_pintura,parent,false);
         ViewHolderPintura viewHolderPintura = new ViewHolderPintura(celda);
