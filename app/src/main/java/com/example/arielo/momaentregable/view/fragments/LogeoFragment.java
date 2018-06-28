@@ -36,7 +36,6 @@ public class LogeoFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,12 +51,8 @@ public class LogeoFragment extends Fragment {
                 cargarRecicler();
             }
         });
-
-
         return view;
     }
-
-
     public void conectarConFacebook() {
         loginButton.setReadPermissions("email");
         // If using in a fragment
@@ -70,16 +65,12 @@ public class LogeoFragment extends Fragment {
                 // App code
                 Toast.makeText(view.getContext(), "Logeo Exitoso", Toast.LENGTH_SHORT).show();
                 cargarRecicler();
-
-
             }
-
             @Override
             public void onCancel() {
                 // App code
                 Toast.makeText(view.getContext(), "Logeo Cancelado", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onError(FacebookException exception) {
                 // App code
@@ -88,24 +79,20 @@ public class LogeoFragment extends Fragment {
         });
         Token();
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     private void Token() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
             cargarRecicler();
         }
-
     }
     private void cargarRecicler(){
         getFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity, new FragmentRecyclerView()).commit();
     }
-
 
 }

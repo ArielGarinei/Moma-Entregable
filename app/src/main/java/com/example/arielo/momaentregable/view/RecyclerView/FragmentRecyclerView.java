@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ import java.util.List;
 public class FragmentRecyclerView extends Fragment {
     private List<Pintura> pinturaList;
     private RecyclerView recyclerView;
+    private List<Artist> artistList;
 
 
     public FragmentRecyclerView() {
@@ -55,7 +57,6 @@ public class FragmentRecyclerView extends Fragment {
     }
     public void leerSimple(final Context context){
         DatabaseReference mDatabase;
-
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase = firebaseDatabase.getReference();
         DatabaseReference referencePrimerMensaje = mDatabase.child("artists").child("0");
@@ -64,7 +65,6 @@ public class FragmentRecyclerView extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Artist artist = dataSnapshot.getValue(Artist.class);
-                Toast.makeText(context, artist.toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -81,10 +81,11 @@ public class FragmentRecyclerView extends Fragment {
         @Override
         public void finish(List<Pintura> resultado) {
             pinturaList = resultado;
-            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(resultado);
+            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(pinturaList);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
     });
     }
+
 }
