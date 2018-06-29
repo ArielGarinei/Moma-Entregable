@@ -1,10 +1,5 @@
 package com.example.arielo.momaentregable.model;
-
 import java.io.Serializable;
-
-/**
- * Created by Arielo on 17/6/2018.
- */
 
 public class Pintura implements Serializable {
     private String image;
@@ -21,5 +16,17 @@ public class Pintura implements Serializable {
 
     public String getArtistId() {
         return artistId;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setArtistId(String artistId) {
+        this.artistId = artistId;
     }
 }

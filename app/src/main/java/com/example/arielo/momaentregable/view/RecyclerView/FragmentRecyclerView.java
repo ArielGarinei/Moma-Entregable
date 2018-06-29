@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.ResultListener;
 import com.example.arielo.momaentregable.controller.PinturaController;
@@ -26,19 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentRecyclerView extends Fragment {
+public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapter.EscuchadorDePinturas {
     private List<Pintura> pinturaList;
     private RecyclerView recyclerView;
     private List<Artist> artistList;
+    private NotificadorDeActivityRVA notificadorDeActivityRVA;
 
 
     public FragmentRecyclerView() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,4 +83,11 @@ public class FragmentRecyclerView extends Fragment {
     });
     }
 
+    @Override
+    public void seleccionaronLaPintura(int posicion) {
+        notificadorDeActivityRVA.notificadorRVA(posicion);
+    }
+    public interface NotificadorDeActivityRVA{
+        void notificadorRVA(int posicon);
+    }
 }

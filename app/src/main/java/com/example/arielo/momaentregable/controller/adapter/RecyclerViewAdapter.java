@@ -19,10 +19,6 @@ import com.example.arielo.momaentregable.model.Pintura;
 import java.util.List;
 import java.util.zip.Inflater;
 
-/**
- * Created by Arielo on 17/6/2018.
- */
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter{
     private List<Pintura> pinturaList;
     private Context context;
@@ -55,6 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
     public int getItemCount() {
         return pinturaList.size();
     }
+
     private class ViewHolderPintura extends RecyclerView.ViewHolder{
         ImageView textViewImagePintura;
         TextView textViewArtistaPintura;
@@ -69,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
                 @Override
                 public void onClick(View view) {
                     int posicionSeleccionada = getAdapterPosition();
-                    escuchadorDePinturas.seleccionaronLaObra(posicionSeleccionada);
+                    escuchadorDePinturas.seleccionaronLaPintura(posicionSeleccionada);
 
                 }
             });
@@ -83,7 +80,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
             textViewTituloPintura.setText(pinturaEnPosicion.getName());
         }
     }
+
     public interface EscuchadorDePinturas{
-        void seleccionaronLaObra(int posicion);
+        void seleccionaronLaPintura(int posicion);
     }
 }

@@ -22,9 +22,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LogeoFragment extends Fragment {
     CallbackManager callbackManager;
     LoginButton loginButton;
@@ -84,6 +81,7 @@ public class LogeoFragment extends Fragment {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     private void Token() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
@@ -91,6 +89,7 @@ public class LogeoFragment extends Fragment {
             cargarRecicler();
         }
     }
+
     private void cargarRecicler(){
         getFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity, new FragmentRecyclerView()).commit();
     }

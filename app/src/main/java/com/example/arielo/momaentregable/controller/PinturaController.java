@@ -13,6 +13,7 @@ import java.util.List;
  */
 
 public class PinturaController {
+
     public void obtenerPintura(final ResultListener<List<Pintura>> escuchadorDeLaVista){
         ResultListener<List<Pintura>> escuchadorDelControlador = new ResultListener<List<Pintura>>() {
             @Override
@@ -30,6 +31,7 @@ public class PinturaController {
             escuchadorDeLaVista.finish(pinturaList);
         }*/
     }
+
     public Boolean hayInternet(){
         return true;
     }

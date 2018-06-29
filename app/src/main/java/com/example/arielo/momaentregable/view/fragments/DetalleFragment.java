@@ -21,9 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DetalleFragment extends Fragment {
     View view;
     List<Artist> artistList;
@@ -31,7 +28,6 @@ public class DetalleFragment extends Fragment {
     TextView textViewNombrePintura;
     TextView textViewNombreArtista;
     TextView textViewInfluencias;
-
     public static final String ARTISTA = "artist";
     public static final String PINTURA = "paint";
 
@@ -52,7 +48,6 @@ public class DetalleFragment extends Fragment {
         textViewNombreArtista= view.findViewById(R.id.textViewNombreDelArtista);
         textViewInfluencias= view.findViewById(R.id.textViewInfluencias);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

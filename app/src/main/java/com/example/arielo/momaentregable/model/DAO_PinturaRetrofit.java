@@ -12,12 +12,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Arielo on 17/6/2018.
- */
-
 public class DAO_PinturaRetrofit {
-
     private  String baseURL;
     private  Retrofit retrofit;
     private  ServicePintura servicePintura;
@@ -31,6 +26,7 @@ public class DAO_PinturaRetrofit {
 
         servicePintura = retrofit.create(ServicePintura.class);
     }
+
     public void obtenerPinturasDeInternet(final ResultListener<List<Pintura>> escuchadorDelControlador){
         Call<ContenedorPintura> retrofitListener = servicePintura.getPintura();
         retrofitListener.enqueue(new Callback<ContenedorPintura>() {
