@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.arielo.momaentregable.view.fragments.DetalleFragmentViewPager.POSICION;
+
 public class MainActivity extends AppCompatActivity implements FragmentRecyclerView.NotificadorDeActivityRVA{
 
     @Override
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements FragmentRecyclerV
     public void notificadorRVA(int posicon) {
         DetalleFragmentViewPager detalleFragmentViewPager = new DetalleFragmentViewPager();
         Bundle bundle = new Bundle();
-        bundle.putInt("posicon",posicon);
+        bundle.putInt(POSICION,posicon);
         detalleFragmentViewPager.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity,detalleFragmentViewPager ).commit();
 

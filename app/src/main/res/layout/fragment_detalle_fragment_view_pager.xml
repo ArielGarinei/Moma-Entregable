@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.arielo.momaentregable.view.fragments.DetalleFragmentViewPager">
 
-    <FrameLayout
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contenedorDeFragmentosViewPager">
 
-    </FrameLayout>
+    </android.support.v4.view.ViewPager>
 
 </FrameLayout>

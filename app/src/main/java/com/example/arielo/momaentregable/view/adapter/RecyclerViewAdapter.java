@@ -1,31 +1,27 @@
-package com.example.arielo.momaentregable.controller.adapter;
+package com.example.arielo.momaentregable.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.PluralsRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.model.Pintura;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter{
     private List<Pintura> pinturaList;
     private Context context;
     private EscuchadorDePinturas escuchadorDePinturas;
 
-    public RecyclerViewAdapter(List<Pintura> pinturaList) {
+    public RecyclerViewAdapter(List<Pintura> pinturaList,EscuchadorDePinturas escuchadorDePinturas) {
         this.pinturaList = pinturaList;
+        this.escuchadorDePinturas = escuchadorDePinturas;
 
     }
 
@@ -82,6 +78,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
     }
 
     public interface EscuchadorDePinturas{
-        void seleccionaronLaPintura(int posicion);
+        public void seleccionaronLaPintura(int posicion);
     }
 }

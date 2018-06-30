@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.ResultListener;
 import com.example.arielo.momaentregable.controller.PinturaController;
-import com.example.arielo.momaentregable.controller.adapter.RecyclerViewAdapter;
+import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapter;
 import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.model.Pintura;
 import com.google.firebase.database.DataSnapshot;
@@ -21,18 +21,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapter.EscuchadorDePinturas {
     private List<Pintura> pinturaList;
     private RecyclerView recyclerView;
-    private List<Artist> artistList;
     private NotificadorDeActivityRVA notificadorDeActivityRVA;
 
 
     public FragmentRecyclerView() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.notificadorDeActivityRVA = (NotificadorDeActivityRVA) context;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Artist artist = dataSnapshot.getValue(Artist.class);
+               Artist artist = dataSnapshot.getValue(Artist.class);
             }
 
             @Override
@@ -69,14 +73,13 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
         };
         referencePrimerMensaje.addListenerForSingleValueEvent(valueEventListener);
     }
-
     public void  cargarPinturas(){
         PinturaController pinturaController = new PinturaController();
         pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
         @Override
         public void finish(List<Pintura> resultado) {
             pinturaList = resultado;
-            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(pinturaList);
+            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(pinturaList,FragmentRecyclerView.this);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
