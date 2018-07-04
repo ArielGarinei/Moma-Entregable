@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.view.RecyclerView.FragmentRecyclerView;
+import com.example.arielo.momaentregable.view.fragments.DetalleFragment;
 import com.example.arielo.momaentregable.view.fragments.DetalleFragmentViewPager;
 import com.example.arielo.momaentregable.view.fragments.LogeoFragment;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements FragmentRecyclerV
         Bundle bundle = new Bundle();
         bundle.putInt(POSICION,posicon);
         detalleFragmentViewPager.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity,detalleFragmentViewPager ).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity,detalleFragmentViewPager).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosMainActivity,new DetalleFragment()).commit();
 
     }
 }

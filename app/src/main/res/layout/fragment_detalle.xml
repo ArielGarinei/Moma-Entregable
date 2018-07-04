@@ -1,11 +1,17 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.arielo.momaentregable.view.fragments.DetalleFragment"
-    android:orientation="vertical">
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
    <android.support.v7.widget.CardView
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
@@ -22,7 +28,7 @@
                android:layout_width="match_parent"
                android:layout_height="35dp"
                android:background="#8e000000"
-               app:layout_anchor="@+id/imageView"
+               app:layout_anchor="@+id/imageViewPintura"
                app:layout_anchorGravity="bottom|center"
                android:text="Aca va a a ir el nombre de la Obra"
                android:textSize="25dp"
@@ -75,3 +81,5 @@
 
 
 </LinearLayout>
+
+</ScrollView>

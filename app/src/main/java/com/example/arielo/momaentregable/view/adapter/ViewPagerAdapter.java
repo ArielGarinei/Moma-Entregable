@@ -23,7 +23,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
         super(fm);
         for (Artist artist : artistList) {
             for (Pintura pintura : pinturaList) {
-             if (artist.getArtistId() == pintura.getArtistId()){
+             if (artist.getArtistId().equals(pintura.getArtistId()) ){
                  fragmentList.add(DetalleFragment.creadorDeFragmentos(pintura,artist));
              }
             }

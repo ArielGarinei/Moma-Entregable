@@ -55,10 +55,7 @@ public class DetalleFragment extends Fragment {
 
     public DetalleFragment() {
         // Required empty public constructor
-        imageViewPintura = view.findViewById(R.id.imageViewPintura);
-        textViewNombrePintura = view.findViewById(R.id.textViewNombreDeLaPintura);
-        textViewNombreArtista= view.findViewById(R.id.textViewNombreDelArtista);
-        textViewInfluencias= view.findViewById(R.id.textViewInfluencias);
+
     }
 
     @Override
@@ -66,6 +63,10 @@ public class DetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_detalle, container, false);
+        imageViewPintura = view.findViewById(R.id.imageViewPintura);
+        textViewNombrePintura = view.findViewById(R.id.textViewNombreDeLaPintura);
+        textViewNombreArtista= view.findViewById(R.id.textViewNombreDelArtista);
+        textViewInfluencias= view.findViewById(R.id.textViewInfluencias);
         Bundle bundle = getArguments();
         final Artist artist = (Artist) bundle.getSerializable(ARTISTA);
         final Pintura pintura = (Pintura) bundle.getSerializable(PINTURA);

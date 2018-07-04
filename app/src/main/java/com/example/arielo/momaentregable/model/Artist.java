@@ -1,5 +1,6 @@
 package com.example.arielo.momaentregable.model;
 
+import com.google.firebase.database.PropertyName;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,17 +11,16 @@ import java.io.Serializable;
  */
 
 public class Artist implements Serializable {
-    @SerializedName("Influenced_by")
-    @Expose
+    @PropertyName("Influenced_by")
     private String influencedBy;
-    @SerializedName("artistId")
-    @Expose
+
+    @PropertyName("artistId")
     private String artistId;
-    @SerializedName("name")
-    @Expose
+
+    @PropertyName("name")
     private String name;
-    @SerializedName("nationality")
-    @Expose
+
+    @PropertyName("nationality")
     private String nationality;
 
     public String getInfluencedBy() {
@@ -54,4 +54,5 @@ public class Artist implements Serializable {
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
+
 }
