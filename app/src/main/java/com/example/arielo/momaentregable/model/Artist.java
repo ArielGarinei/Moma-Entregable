@@ -12,16 +12,16 @@ import java.io.Serializable;
 
 public class Artist implements Serializable {
     @PropertyName("Influenced_by")
-    private String influencedBy;
+    public String influencedBy;
 
     @PropertyName("artistId")
-    private String artistId;
+    public String artistId;
 
     @PropertyName("name")
-    private String name;
+    public String name;
 
     @PropertyName("nationality")
-    private String nationality;
+    public String nationality;
 
     public String getInfluencedBy() {
         return influencedBy;

@@ -55,22 +55,6 @@ public class DetalleFragmentViewPager extends Fragment {
         return view;
     }
 
-    private void queseyo() {
-        pinturaController = new PinturaController();
-        pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
-            @Override
-            public void finish(List<Pintura> resultado) {
-                pinturaList = resultado;
-                viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), artistList, pinturaList);
-                viewPager.setAdapter(viewPagerAdapter);
-                Bundle bundle = getArguments();
-                int posicion = bundle.getInt(POSICION);
-                viewPager.setCurrentItem(posicion);
-                viewPager.setOffscreenPageLimit(10);
-            }
-        });
-    }
-
     public void LeerLista(View view){
         DatabaseReference mDatabase;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -85,8 +69,6 @@ public class DetalleFragmentViewPager extends Fragment {
                     Object unObject = dataSnapshotChild.getValue();
                     artistList.add(artistEnPosicion);
                 }
-
-
                 queseyo();
             }
             @Override
@@ -94,5 +76,21 @@ public class DetalleFragmentViewPager extends Fragment {
             }
         };
         referencelista.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void queseyo() {
+        pinturaController = new PinturaController();
+        pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
+            @Override
+            public void finish(List<Pintura> resultado) {
+                pinturaList = resultado;
+                viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), artistList, pinturaList);
+                viewPager.setAdapter(viewPagerAdapter);
+                Bundle bundle = getArguments();
+                int posicion = bundle.getInt(POSICION);
+                viewPager.setCurrentItem(posicion);
+                viewPager.setOffscreenPageLimit(10);
+            }
+        });
     }
 }

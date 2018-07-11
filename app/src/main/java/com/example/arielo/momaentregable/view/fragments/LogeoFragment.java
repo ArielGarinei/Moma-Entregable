@@ -82,7 +82,7 @@ public class LogeoFragment extends Fragment {
                 Toast.makeText(view.getContext(), "Logeo Erroneo", Toast.LENGTH_SHORT).show();
             }
         });
-        //Token();
+        Token();
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -120,5 +120,6 @@ public class LogeoFragment extends Fragment {
                     }
                 });
     }
+
 
 }

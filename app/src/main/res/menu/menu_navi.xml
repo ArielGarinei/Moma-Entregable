@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemInicio"
+        android:title="Inicio"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:checkable="true"
+        />
+
+    <item
+        android:id="@+id/itemCerrarSesion"
+        android:title="Usuario"
+        android:icon="@drawable/ic_exit_to_app_black_24dp"
+        android:checkable="true"
+        />
+
+    <item
+        android:id="@+id/itemConfiguracion"
+        android:title="Configuracion"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:checkable="true"
+        />
+
+</menu>
