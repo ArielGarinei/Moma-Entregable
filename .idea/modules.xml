@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Moma-Entregable.iml" filepath="$PROJECT_DIR$/Moma-Entregable.iml" />
+      <module fileurl="file://C:\Users\DH\Desktop\Moma-Entregable\Moma-Entregable.iml" filepath="C:\Users\DH\Desktop\Moma-Entregable\Moma-Entregable.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\DH\Desktop\Moma-Entregable\app\app.iml" filepath="C:\Users\DH\Desktop\Moma-Entregable\app\app.iml" />
     </modules>
   </component>
 </project>

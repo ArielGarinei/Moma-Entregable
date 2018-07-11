@@ -14,9 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.Artist;
 import com.example.arielo.momaentregable.model.Pintura;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -73,7 +75,7 @@ public class DetalleFragment extends Fragment {
         textViewNombrePintura.setText(pintura.getName());
         textViewNombreArtista.setText(artist.getName());
         textViewInfluencias.setText(artist.getInfluencedBy());
-        downloadFacha(pintura.getImage());
+        downloadImagenFirebaseUI(imageViewPintura,pintura);
 
 
 
@@ -102,31 +104,11 @@ public class DetalleFragment extends Fragment {
         };
         referencelista.addListenerForSingleValueEvent(valueEventListener);
     }
-    public void downloadFacha(String child) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child(child);
-
-        File localFile = null;
-        try {
-            localFile = File.createTempFile("images", "jpg");
-            final File finalLocalFile = localFile;
-            imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Bitmap bitmapDeImagen = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                    imageViewPintura.setImageBitmap(bitmapDeImagen);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void downloadImagenFirebaseUI(ImageView imageView, Pintura pintura){
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        StorageReference imageRef = storageReference.child(pintura.getImage());
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
     }
 }
 /*

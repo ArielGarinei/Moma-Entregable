@@ -52,8 +52,10 @@ public class DetalleFragmentViewPager extends Fragment {
         viewPager = view.findViewById(R.id.contenedorDeFragmentosViewPager);
         LeerLista(view);
 
+        return view;
+    }
 
-
+    private void queseyo() {
         pinturaController = new PinturaController();
         pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
             @Override
@@ -67,11 +69,8 @@ public class DetalleFragmentViewPager extends Fragment {
                 viewPager.setOffscreenPageLimit(10);
             }
         });
-
-
-
-        return view;
     }
+
     public void LeerLista(View view){
         DatabaseReference mDatabase;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -86,6 +85,9 @@ public class DetalleFragmentViewPager extends Fragment {
                     Object unObject = dataSnapshotChild.getValue();
                     artistList.add(artistEnPosicion);
                 }
+
+
+                queseyo();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

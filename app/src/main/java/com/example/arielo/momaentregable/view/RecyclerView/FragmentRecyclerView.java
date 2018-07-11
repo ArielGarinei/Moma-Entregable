@@ -48,31 +48,9 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         cargarPinturas();
-        leerSimple(getContext());
-
-
-
         return view;
     }
-    public void leerSimple(final Context context){
-        DatabaseReference mDatabase;
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = firebaseDatabase.getReference();
-        DatabaseReference referencePrimerMensaje = mDatabase.child("artists").child("0");
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-               Artist artist = dataSnapshot.getValue(Artist.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        referencePrimerMensaje.addListenerForSingleValueEvent(valueEventListener);
-    }
     public void  cargarPinturas(){
         PinturaController pinturaController = new PinturaController();
         pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
@@ -94,3 +72,25 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
         void notificadorRVA(int posicon);
     }
 }
+
+
+
+/* public void leerSimple(final Context context){
+        DatabaseReference mDatabase;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabase = firebaseDatabase.getReference();
+        DatabaseReference referencePrimerMensaje = mDatabase.child("artists").child("0");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               Artist artist = dataSnapshot.getValue(Artist.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        referencePrimerMensaje.addListenerForSingleValueEvent(valueEventListener);
+    }*/
