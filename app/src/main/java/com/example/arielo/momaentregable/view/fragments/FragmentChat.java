@@ -78,8 +78,8 @@ public class FragmentChat extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        fotoPerfil = view.findViewById(R.id.fotoPerfil);
-        nombre = view.findViewById(R.id.nombre);
+        fotoPerfil = view.findViewById(R.id.imageViewFoto);
+        nombre = view.findViewById(R.id.textViewNombreUsuario);
         rvMensajes = view.findViewById(R.id.rvMensajes);
         txtMensaje = view.findViewById(R.id.txtMensaje);
         btnEnviar = view.findViewById(R.id.btnEnviar);
@@ -88,7 +88,7 @@ public class FragmentChat extends Fragment {
         fotoPerfilCadena = "";
 
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chatV2");//Sala de chat (nombre) version 2
+        databaseReference = database.getReference("chat");
         storage = FirebaseStorage.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
