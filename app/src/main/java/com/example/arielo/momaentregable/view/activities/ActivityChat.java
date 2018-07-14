@@ -54,11 +54,11 @@ public class ActivityChat extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    private static final int PHOTO_SEND = 1;
-    private static final int PHOTO_PERFIL = 2;
+    private static final int ENVIAR_FOTO = 1;
+    private static final int FOTO_PERFIL = 2;
     private String fotoPerfilCadena;
 
-    private FirebaseAuth mAuth;
+
     private String NOMBRE_USUARIO;
 
     @Override
@@ -85,7 +85,7 @@ public class ActivityChat extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("chatV2");//Sala de chat (nombre) version 2
         storage = FirebaseStorage.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         adapter = new AdapterMensajes(this);
         LinearLayoutManager l = new LinearLayoutManager(this);
@@ -114,7 +114,7 @@ public class ActivityChat extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
                 i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"),PHOTO_SEND);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"), ENVIAR_FOTO);
             }
         });
 
@@ -124,7 +124,7 @@ public class ActivityChat extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
                 i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"),PHOTO_PERFIL);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"), FOTO_PERFIL);
             }
         });
 
@@ -194,7 +194,7 @@ public class ActivityChat extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PHOTO_SEND && resultCode == RESULT_OK){
+        if(requestCode == ENVIAR_FOTO && resultCode == RESULT_OK){
             Uri u = data.getData();
             storageReference = storage.getReference("imagenes_chat");//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
@@ -206,7 +206,7 @@ public class ActivityChat extends AppCompatActivity {
                     databaseReference.push().setValue(m);
                 }
             });
-        }else if(requestCode == PHOTO_PERFIL && resultCode == RESULT_OK){
+        }else if(requestCode == FOTO_PERFIL && resultCode == RESULT_OK){
             Uri u = data.getData();
             storageReference = storage.getReference("foto_perfil");//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
@@ -226,7 +226,7 @@ public class ActivityChat extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth = FirebaseAuth.getInstance();
         usuarioActual = firebaseAuth.getCurrentUser();
         if (usuarioActual!=null) {

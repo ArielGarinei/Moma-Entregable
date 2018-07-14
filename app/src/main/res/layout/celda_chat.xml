@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:layout_below="@+id/imageViewFoto"
-                android:text="Aca va a ir el mensaje del usuario"
+                android:text="Aca va a ir el mensajeUsuarioEnviado del usuario"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/textViewMensaje"/>

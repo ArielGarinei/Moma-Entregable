@@ -38,7 +38,7 @@
                android:background="#8e000000"
                app:layout_anchor="@+id/imageViewPintura"
                app:layout_anchorGravity="bottom|center"
-               android:text="Aca va a a ir el nombre de la Obra"
+               android:text="Aca va a a ir el nombreUsuarioEnviado de la Obra"
                android:textSize="25dp"
                android:textAlignment="center"
                android:id="@+id/textViewNombreDeLaPintura"/>
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Aca va a ir el nombre del artista"
+            android:text="Aca va a ir el nombreUsuarioEnviado del artista"
             android:textSize="20dp" />
     </LinearLayout>
         <LinearLayout

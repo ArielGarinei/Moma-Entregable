@@ -1,8 +1,6 @@
 package com.example.arielo.momaentregable.view.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,14 +13,9 @@ import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.Pintura;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter{

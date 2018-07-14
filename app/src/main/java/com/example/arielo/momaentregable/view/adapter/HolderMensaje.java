@@ -13,59 +13,59 @@ import com.example.arielo.momaentregable.R;
 
 public class HolderMensaje extends RecyclerView.ViewHolder {
 
-    private TextView nombre;
-    private TextView mensaje;
-    private TextView hora;
-    private ImageView fotoMensajePerfil;
-    private ImageView fotoMensaje;
+    private TextView nombreUsuarioEnviado;
+    private TextView mensajeUsuarioEnviado;
+    private TextView horaUsuarioEnviado;
+    private ImageView fotoMensajePerfilUsuarioEnviado;
+    private ImageView fotoMensajeUsuarioEnviado;
 
     public HolderMensaje(View itemView) {
         super(itemView);
-        nombre = itemView.findViewById(R.id.textViewNombreUsuario);
-        mensaje = itemView.findViewById(R.id.textViewMensaje);
-        hora = itemView.findViewById(R.id.textViewHora);
-        fotoMensajePerfil = itemView.findViewById(R.id.imageViewFoto);
-        fotoMensaje = itemView.findViewById(R.id.imageViewMensaje);
+        nombreUsuarioEnviado = itemView.findViewById(R.id.textViewNombreUsuario);
+        mensajeUsuarioEnviado = itemView.findViewById(R.id.textViewMensaje);
+        horaUsuarioEnviado = itemView.findViewById(R.id.textViewHora);
+        fotoMensajePerfilUsuarioEnviado = itemView.findViewById(R.id.imageViewFoto);
+        fotoMensajeUsuarioEnviado = itemView.findViewById(R.id.imageViewMensaje);
     }
 
-    public TextView getNombre() {
-        return nombre;
+    public TextView getNombreUsuarioEnviado() {
+        return nombreUsuarioEnviado;
     }
 
-    public void setNombre(TextView nombre) {
-        this.nombre = nombre;
+    public void setNombreUsuarioEnviado(TextView nombreUsuarioEnviado) {
+        this.nombreUsuarioEnviado = nombreUsuarioEnviado;
     }
 
-    public TextView getMensaje() {
-        return mensaje;
+    public TextView getMensajeUsuarioEnviado() {
+        return mensajeUsuarioEnviado;
     }
 
-    public void setMensaje(TextView mensaje) {
-        this.mensaje = mensaje;
+    public void setMensajeUsuarioEnviado(TextView mensajeUsuarioEnviado) {
+        this.mensajeUsuarioEnviado = mensajeUsuarioEnviado;
     }
 
-    public TextView getHora() {
-        return hora;
+    public TextView getHoraUsuarioEnviado() {
+        return horaUsuarioEnviado;
     }
 
-    public void setHora(TextView hora) {
-        this.hora = hora;
+    public void setHoraUsuarioEnviado(TextView horaUsuarioEnviado) {
+        this.horaUsuarioEnviado = horaUsuarioEnviado;
     }
 
-    public ImageView getFotoMensajePerfil() {
-        return fotoMensajePerfil;
+    public ImageView getFotoMensajePerfilUsuarioEnviado() {
+        return fotoMensajePerfilUsuarioEnviado;
     }
 
-    public void setFotoMensajePerfil(ImageView fotoMensajePerfil) {
-        this.fotoMensajePerfil = fotoMensajePerfil;
+    public void setFotoMensajePerfilUsuarioEnviado(ImageView fotoMensajePerfilUsuarioEnviado) {
+        this.fotoMensajePerfilUsuarioEnviado = fotoMensajePerfilUsuarioEnviado;
     }
 
-    public ImageView getFotoMensaje() {
-        return fotoMensaje;
+    public ImageView getFotoMensajeUsuarioEnviado() {
+        return fotoMensajeUsuarioEnviado;
     }
 
-    public void setFotoMensaje(ImageView fotoMensaje) {
-        this.fotoMensaje = fotoMensaje;
+    public void setFotoMensajeUsuarioEnviado(ImageView fotoMensajeUsuarioEnviado) {
+        this.fotoMensajeUsuarioEnviado = fotoMensajeUsuarioEnviado;
     }
 }
 
