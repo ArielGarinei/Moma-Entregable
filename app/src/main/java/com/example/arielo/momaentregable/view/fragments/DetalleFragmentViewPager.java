@@ -66,7 +66,6 @@ public class DetalleFragmentViewPager extends Fragment {
                 artistList = new ArrayList<>();
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
                     Artist artistEnPosicion = dataSnapshotChild.getValue(Artist.class);
-                    Object unObject = dataSnapshotChild.getValue();
                     artistList.add(artistEnPosicion);
                 }
                 queseyo();

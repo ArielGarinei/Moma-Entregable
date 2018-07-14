@@ -24,6 +24,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activities.Main2Activity" />
+        <activity android:name=".view.activities.ActivityDetalle" />
+        <activity android:name=".view.activities.ActivityRecycler" />
+        <activity android:name=".view.activities.ActivityChat" />
+        <activity android:name=".view.activities.ActivityLogeo" />
+        <activity android:name=".view.activities.ActivityRegistro"></activity>
     </application>
 
 </manifest>

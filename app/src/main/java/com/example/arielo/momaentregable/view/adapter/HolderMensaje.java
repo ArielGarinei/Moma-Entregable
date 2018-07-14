@@ -21,11 +21,11 @@ public class HolderMensaje extends RecyclerView.ViewHolder {
 
     public HolderMensaje(View itemView) {
         super(itemView);
-        nombre = itemView.findViewById(R.id.nombreMensaje);
-        mensaje = itemView.findViewById(R.id.mensajeMensaje);
-        hora = itemView.findViewById(R.id.horaMensaje);
-        fotoMensajePerfil = itemView.findViewById(R.id.fotoPerfilMensaje);
-        fotoMensaje = itemView.findViewById(R.id.mensajeFoto);
+        nombre = itemView.findViewById(R.id.textViewNombreUsuario);
+        mensaje = itemView.findViewById(R.id.textViewMensaje);
+        hora = itemView.findViewById(R.id.textViewHora);
+        fotoMensajePerfil = itemView.findViewById(R.id.imageViewFoto);
+        fotoMensaje = itemView.findViewById(R.id.imageViewMensaje);
     }
 
     public TextView getNombre() {

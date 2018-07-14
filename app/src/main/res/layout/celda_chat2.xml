@@ -8,14 +8,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
-        android:elevation="30dp">
+        android:elevation="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="30dp">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/imageViewFoto"
+                android:id="@+id/imageViewFotoRecibido"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@mipmap/ic_launcher"
@@ -23,27 +25,35 @@
                 />
 
             <TextView
-                android:id="@+id/textViewNombreUsuario"
+                android:id="@+id/textViewNombreUsuarioRecibido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NombreUsuario"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/imageViewFoto"/>
+                android:layout_toRightOf="@+id/imageViewFotoRecibido"/>
 
             <TextView
-                android:id="@+id/textViewHora"
+                android:id="@+id/textViewHoraRecibido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:text="00:00"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"
                 />
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
-                android:layout_below="@+id/imageViewFoto"/>
+                android:text="Aca va a ir el mensaje recibido"
+                android:layout_below="@+id/imageViewFotoRecibido"/>
+            <ImageView
+                android:id="@+id/imageViewMensajeFotoRecibido"
+                android:layout_below="@+id/textViewMensaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
         </RelativeLayout>
 
 

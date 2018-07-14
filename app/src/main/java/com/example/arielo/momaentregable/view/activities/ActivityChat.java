@@ -1,19 +1,16 @@
-package com.example.arielo.momaentregable.view.fragments;
-
+package com.example.arielo.momaentregable.view.activities;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,7 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.MensajeEnviar;
 import com.example.arielo.momaentregable.model.MensajeRecibir;
-import com.example.arielo.momaentregable.view.activities.MainActivity;
+import com.example.arielo.momaentregable.model.Usuario;
 import com.example.arielo.momaentregable.view.adapter.AdapterMensajes;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,20 +37,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import static android.support.v4.provider.FontsContractCompat.FontRequestCallback.RESULT_OK;
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FragmentChat extends Fragment {
+public class ActivityChat extends AppCompatActivity {
 
     private ImageView fotoPerfil;
     private TextView nombre;
     private RecyclerView rvMensajes;
     private EditText txtMensaje;
-    private Button btnEnviar, cerrarSesion;
+    private Button btnEnviar,cerrarSesion;
     private AdapterMensajes adapter;
     private ImageButton btnEnviarFoto;
+
+    private FirebaseUser usuarioActual;
+    private FirebaseAuth firebaseAuth;
 
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
@@ -62,45 +57,45 @@ public class FragmentChat extends Fragment {
     private static final int PHOTO_SEND = 1;
     private static final int PHOTO_PERFIL = 2;
     private String fotoPerfilCadena;
-    View view;
 
     private FirebaseAuth mAuth;
     private String NOMBRE_USUARIO;
 
-    public FragmentChat() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_chat, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
 
-        fotoPerfil = view.findViewById(R.id.imageViewFoto);
-        nombre = view.findViewById(R.id.textViewNombreUsuario);
-        rvMensajes = view.findViewById(R.id.rvMensajes);
-        txtMensaje = view.findViewById(R.id.txtMensaje);
-        btnEnviar = view.findViewById(R.id.btnEnviar);
-        btnEnviarFoto = view.findViewById(R.id.btnEnviarFoto);
-        cerrarSesion = view.findViewById(R.id.cerrarSesion);
+        fotoPerfil = findViewById(R.id.fotoPerfil);
+        nombre = findViewById(R.id.nombre);
+        rvMensajes = findViewById(R.id.rvMensajes);
+        txtMensaje = findViewById(R.id.txtMensaje);
+        btnEnviar = findViewById(R.id.btnEnviar);
+        btnEnviarFoto = findViewById(R.id.btnEnviarFoto);
+        cerrarSesion = findViewById(R.id.cerrarSesion);
         fotoPerfilCadena = "";
 
+
+
+        if (usuarioActual != null) {
+            nombre.setText(usuarioActual.getDisplayName());
+            Glide.with(this).load(usuarioActual.getPhotoUrl() + "/picture?type=large").into(fotoPerfil);
+        }
+
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chat");
+        databaseReference = database.getReference("chatV2");//Sala de chat (nombre) version 2
         storage = FirebaseStorage.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        adapter = new AdapterMensajes(getContext());
-        LinearLayoutManager l = new LinearLayoutManager(getContext());
+        adapter = new AdapterMensajes(this);
+        LinearLayoutManager l = new LinearLayoutManager(this);
         rvMensajes.setLayoutManager(l);
         rvMensajes.setAdapter(adapter);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.push().setValue(new MensajeEnviar(txtMensaje.getText().toString(), NOMBRE_USUARIO, fotoPerfilCadena, "1", ServerValue.TIMESTAMP));
+                databaseReference.push().setValue(new MensajeEnviar(txtMensaje.getText().toString(),NOMBRE_USUARIO,fotoPerfilCadena,"1", ServerValue.TIMESTAMP));
                 txtMensaje.setText("");
             }
         });
@@ -109,6 +104,7 @@ public class FragmentChat extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                returnLogin();
             }
         });
 
@@ -117,8 +113,8 @@ public class FragmentChat extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(i, "Selecciona una foto"), PHOTO_SEND);
+                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"),PHOTO_SEND);
             }
         });
 
@@ -127,8 +123,8 @@ public class FragmentChat extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(i, "Selecciona una foto"), PHOTO_PERFIL);
+                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"),PHOTO_PERFIL);
             }
         });
 
@@ -168,13 +164,12 @@ public class FragmentChat extends Fragment {
             }
         });
 
-        verifyStoragePermissions(getActivity());
+        verifyStoragePermissions(this);
 
-        return view;
     }
 
-    private void setScrollbar() {
-        rvMensajes.scrollToPosition(adapter.getItemCount() - 1);
+    private void setScrollbar(){
+        rvMensajes.scrollToPosition(adapter.getItemCount()-1);
     }
 
     public static boolean verifyStoragePermissions(Activity activity) {
@@ -191,40 +186,78 @@ public class FragmentChat extends Fragment {
                     REQUEST_EXTERNAL_STORAGE
             );
             return false;
-        } else {
+        }else{
             return true;
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_SEND && resultCode == RESULT_OK) {
+        if(requestCode == PHOTO_SEND && resultCode == RESULT_OK){
             Uri u = data.getData();
             storageReference = storage.getReference("imagenes_chat");//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
-            fotoReferencia.putFile(u).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
-                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO + " te ha enviado una foto", u.toString(), NOMBRE_USUARIO, fotoPerfilCadena, "2", ServerValue.TIMESTAMP);
+                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" te ha enviado una foto",u.toString(),NOMBRE_USUARIO,fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(m);
                 }
             });
-        } else if (requestCode == PHOTO_PERFIL && resultCode == RESULT_OK) {
+        }else if(requestCode == PHOTO_PERFIL && resultCode == RESULT_OK){
             Uri u = data.getData();
             storageReference = storage.getReference("foto_perfil");//imagenes_chat
             final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
-            fotoReferencia.putFile(u).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
                     fotoPerfilCadena = u.toString();
-                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO + " ha actualizado su foto de perfil", u.toString(), NOMBRE_USUARIO, fotoPerfilCadena, "2", ServerValue.TIMESTAMP);
+                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" ha actualizado su foto de perfil",u.toString(),NOMBRE_USUARIO,fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(m);
-                    Glide.with(getActivity()).load(u.toString()).into(fotoPerfil);
+                    Glide.with(ActivityChat.this).load(u.toString()).into(fotoPerfil);
                 }
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        usuarioActual = firebaseAuth.getCurrentUser();
+        if (usuarioActual!=null) {
+            nombre.setText(usuarioActual.getDisplayName());
+            Glide.with(this).load(usuarioActual.getPhotoUrl() + "/picture?type=large").into(fotoPerfil);
+        }else {
+            if (currentUser != null) {
+                btnEnviar.setEnabled(false);
+                DatabaseReference reference = database.getReference("Usuarios/" + currentUser.getUid());
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                        NOMBRE_USUARIO = usuario.getNombre();
+                        nombre.setText(NOMBRE_USUARIO);
+                        btnEnviar.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            } else {
+                returnLogin();
+            }
+        }
+    }
+
+    private void returnLogin(){
+        startActivity(new Intent(ActivityChat.this, MainActivity.class));
+        finish();
     }
 }
