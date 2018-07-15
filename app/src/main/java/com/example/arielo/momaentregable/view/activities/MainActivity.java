@@ -1,13 +1,9 @@
 package com.example.arielo.momaentregable.view.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -33,25 +29,25 @@ public class MainActivity extends AppCompatActivity{
 
 
     private CallbackManager callbackManager;
-    private LoginButton loginButton;
+    private LoginButton loginButtonFacebook;
     private TextView textViewLogeoTrucho;
-    private EditText txtCorreo,txtContraseña;
-    private Button btnLogin,btnRegistro;
-    private FirebaseAuth mAuth;
+    private EditText textViewCorreo, textViewContraseña;
+    private Button buttonLogin, buttonRegistro;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtCorreo = findViewById(R.id.idCorreoLogin);
-        txtContraseña = findViewById(R.id.idContraseñaLogin);
-        btnLogin = findViewById(R.id.idLoginLogin);
-        btnRegistro = findViewById(R.id.idRegistroLogin);
+        textViewCorreo = findViewById(R.id.idCorreoLogin);
+        textViewContraseña = findViewById(R.id.idContraseñaLogin);
+        buttonLogin = findViewById(R.id.idLoginLogin);
+        buttonRegistro = findViewById(R.id.idRegistroLogin);
 
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        loginButton = findViewById(R.id.login_button);
+        loginButtonFacebook = findViewById(R.id.login_buttonFacebook);
         callbackManager = CallbackManager.Factory.create();
         conectarConFacebook();
         textViewLogeoTrucho = findViewById(R.id.logeoTrucho);
@@ -63,19 +59,19 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String correo = txtCorreo.getText().toString();
+                String correo = textViewCorreo.getText().toString();
                 if(isValidEmail(correo) && validarContraseña()){
-                    String contraseña = txtContraseña.getText().toString();
-                    mAuth.signInWithEmailAndPassword(correo, contraseña)
+                    String contraseña = textViewContraseña.getText().toString();
+                    firebaseAuth.signInWithEmailAndPassword(correo, contraseña)
                             .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(MainActivity.this, "Se logeo correctamente.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(MainActivity.this, "Bien venido a...\n"+"  MOMA", Toast.LENGTH_SHORT).show();
                                         iniciarActividadRecycler();
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -85,12 +81,12 @@ public class MainActivity extends AppCompatActivity{
                                 }
                             });
                 }else{
-                    Toast.makeText(MainActivity.this, "Validaciones funcionando.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Usuario o contraseña NO validos.\n"+"La contraseña debe ser mayor a seis(6) Digitos" , Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        btnRegistro.setOnClickListener(new View.OnClickListener() {
+        buttonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,ActivityRegistro.class));
@@ -101,10 +97,10 @@ public class MainActivity extends AppCompatActivity{
 
 
     public void conectarConFacebook() {
-        loginButton.setReadPermissions("email");
+        loginButtonFacebook.setReadPermissions("email");
 
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButtonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
@@ -140,17 +136,17 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void handleFacebookAccessToken(AccessToken token) {
-        final FirebaseAuth mAuth;
-        mAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
+        firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
                         } else {
 
@@ -166,7 +162,7 @@ public class MainActivity extends AppCompatActivity{
 
     public boolean validarContraseña(){
         String contraseña;
-        contraseña = txtContraseña.getText().toString();
+        contraseña = textViewContraseña.getText().toString();
         if(contraseña.length()>=6 && contraseña.length()<=16){
             return true;
         }else return false;
@@ -175,7 +171,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser!=null){
             Toast.makeText(this, "Usuario logeado.", Toast.LENGTH_SHORT).show();
             iniciarActividadRecycler();

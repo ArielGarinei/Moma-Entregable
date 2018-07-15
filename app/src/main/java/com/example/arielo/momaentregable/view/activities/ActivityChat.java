@@ -21,8 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.model.MensajeEnviar;
 import com.example.arielo.momaentregable.model.MensajeRecibir;
-import com.example.arielo.momaentregable.model.Usuario;
-import com.example.arielo.momaentregable.view.adapter.AdapterMensajes;
+import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapterMensajes;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,11 +42,12 @@ public class ActivityChat extends AppCompatActivity {
     private RecyclerView rvMensajes;
     private EditText txtMensaje;
     private Button btnEnviar,cerrarSesion;
-    private AdapterMensajes adapter;
+    private RecyclerViewAdapterMensajes adapter;
     private ImageButton btnEnviarFoto;
 
-    private FirebaseUser usuarioActual;
+
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser usuarioActual;
 
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
@@ -56,9 +55,7 @@ public class ActivityChat extends AppCompatActivity {
     private StorageReference storageReference;
     private static final int ENVIAR_FOTO = 1;
     private static final int FOTO_PERFIL = 2;
-    private String fotoPerfilCadena;
-
-
+    private String FOTO_USUARIO;
     private String NOMBRE_USUARIO;
 
     @Override
@@ -67,14 +64,18 @@ public class ActivityChat extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         fotoPerfil = findViewById(R.id.fotoPerfil);
-        nombre = findViewById(R.id.nombre);
+        nombre = findViewById(R.id.nombreUsuario);
         rvMensajes = findViewById(R.id.rvMensajes);
         txtMensaje = findViewById(R.id.txtMensaje);
         btnEnviar = findViewById(R.id.btnEnviar);
         btnEnviarFoto = findViewById(R.id.btnEnviarFoto);
         cerrarSesion = findViewById(R.id.cerrarSesion);
-        fotoPerfilCadena = "";
 
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        usuarioActual = firebaseAuth.getCurrentUser();
+        NOMBRE_USUARIO = usuarioActual.getDisplayName();
+        FOTO_USUARIO = usuarioActual.getPhotoUrl().toString();
 
 
         if (usuarioActual != null) {
@@ -83,19 +84,19 @@ public class ActivityChat extends AppCompatActivity {
         }
 
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("chatV2");//Sala de chat (nombre) version 2
+        databaseReference = database.getReference("chat");
         storage = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        adapter = new AdapterMensajes(this);
-        LinearLayoutManager l = new LinearLayoutManager(this);
-        rvMensajes.setLayoutManager(l);
+        adapter = new RecyclerViewAdapterMensajes(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvMensajes.setLayoutManager(linearLayoutManager);
         rvMensajes.setAdapter(adapter);
 
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.push().setValue(new MensajeEnviar(txtMensaje.getText().toString(),NOMBRE_USUARIO,fotoPerfilCadena,"1", ServerValue.TIMESTAMP));
+                databaseReference.push().setValue(new MensajeEnviar(txtMensaje.getText().toString(),NOMBRE_USUARIO, FOTO_USUARIO,"1",usuarioActual.getUid(), ServerValue.TIMESTAMP));
                 txtMensaje.setText("");
             }
         });
@@ -111,20 +112,20 @@ public class ActivityChat extends AppCompatActivity {
         btnEnviarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"), ENVIAR_FOTO);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent,"Selecciona una foto"), ENVIAR_FOTO);
             }
         });
 
         fotoPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una foto"), FOTO_PERFIL);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent,"Selecciona una foto"), FOTO_PERFIL);
             }
         });
 
@@ -138,9 +139,9 @@ public class ActivityChat extends AppCompatActivity {
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MensajeRecibir m = dataSnapshot.getValue(MensajeRecibir.class);
-                adapter.addMensaje(m);
+            public void onChildAdded(DataSnapshot dataSnapshot, String string) {
+                MensajeRecibir mensajeRecibir = dataSnapshot.getValue(MensajeRecibir.class);
+                adapter.addMensaje(mensajeRecibir);
             }
 
             @Override
@@ -195,27 +196,27 @@ public class ActivityChat extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ENVIAR_FOTO && resultCode == RESULT_OK){
-            Uri u = data.getData();
-            storageReference = storage.getReference("imagenes_chat");//imagenes_chat
-            final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
-            fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            Uri uri = data.getData();
+            storageReference = storage.getReference("imagenes_chat");
+            final StorageReference fotoReferencia = storageReference.child(uri.getLastPathSegment());
+            fotoReferencia.putFile(uri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
-                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" te ha enviado una foto",u.toString(),NOMBRE_USUARIO,fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
+                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" te ha enviado una foto",u.toString(),NOMBRE_USUARIO, FOTO_USUARIO,"2",usuarioActual.getUid(),ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(m);
                 }
             });
         }else if(requestCode == FOTO_PERFIL && resultCode == RESULT_OK){
-            Uri u = data.getData();
-            storageReference = storage.getReference("foto_perfil");//imagenes_chat
-            final StorageReference fotoReferencia = storageReference.child(u.getLastPathSegment());
-            fotoReferencia.putFile(u).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            Uri uri = data.getData();
+            storageReference = storage.getReference("foto_perfil");
+            final StorageReference fotoReferencia = storageReference.child(uri.getLastPathSegment());
+            fotoReferencia.putFile(uri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri u = taskSnapshot.getDownloadUrl();
-                    fotoPerfilCadena = u.toString();
-                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" ha actualizado su foto de perfil",u.toString(),NOMBRE_USUARIO,fotoPerfilCadena,"2",ServerValue.TIMESTAMP);
+                    FOTO_USUARIO = u.toString();
+                    MensajeEnviar m = new MensajeEnviar(NOMBRE_USUARIO+" ha actualizado su foto de perfil",u.toString(),NOMBRE_USUARIO, FOTO_USUARIO,"2",usuarioActual.getUid(),ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(m);
                     Glide.with(ActivityChat.this).load(u.toString()).into(fotoPerfil);
                 }
@@ -226,33 +227,9 @@ public class ActivityChat extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        firebaseAuth = FirebaseAuth.getInstance();
-        usuarioActual = firebaseAuth.getCurrentUser();
         if (usuarioActual!=null) {
             nombre.setText(usuarioActual.getDisplayName());
             Glide.with(this).load(usuarioActual.getPhotoUrl() + "/picture?type=large").into(fotoPerfil);
-        }else {
-            if (currentUser != null) {
-                btnEnviar.setEnabled(false);
-                DatabaseReference reference = database.getReference("Usuarios/" + currentUser.getUid());
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                        NOMBRE_USUARIO = usuario.getNombre();
-                        nombre.setText(NOMBRE_USUARIO);
-                        btnEnviar.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            } else {
-                returnLogin();
-            }
         }
     }
 
@@ -260,4 +237,5 @@ public class ActivityChat extends AppCompatActivity {
         startActivity(new Intent(ActivityChat.this, MainActivity.class));
         finish();
     }
+
 }

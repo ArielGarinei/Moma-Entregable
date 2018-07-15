@@ -33,8 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        LayoutInflater  layoutInflater = LayoutInflater.from(context);
-        View celda = layoutInflater.inflate(R.layout.celda_pintura,parent,false);
+        View celda = LayoutInflater.from(context).inflate(R.layout.celda_pintura,parent,false);
         ViewHolderPintura viewHolderPintura = new ViewHolderPintura(celda);
         return viewHolderPintura;
     }

@@ -1,9 +1,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.arielo.momaentregable.view.fragments.FragmentChat"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,7 +14,7 @@
             android:layout_height="48sp"
             android:src="@mipmap/ic_launcher" />
         <TextView
-            android:id="@+id/nombreUsuarioEnviado"
+            android:id="@+id/nombreUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Arielo"
@@ -53,7 +51,7 @@
             android:id="@+id/txtMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensajeUsuarioEnviado"
+            android:hint="Escribe un mensajeUsuario"
             android:layout_weight="1"/>
 
         <Button

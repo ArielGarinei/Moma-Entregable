@@ -43,14 +43,15 @@
                 android:layout_alignParentRight="true"
                 />
             <TextView
+                android:id="@+id/textViewMensajeRecibido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
-                android:text="Aca va a ir el mensajeUsuarioEnviado recibido"
+                android:text="Aca va a ir el mensajeUsuario Recibido"
                 android:layout_below="@+id/imageViewFotoRecibido"/>
             <ImageView
                 android:id="@+id/imageViewMensajeFotoRecibido"
-                android:layout_below="@+id/textViewMensaje"
+                android:layout_below="@+id/textViewMensajeRecibido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>

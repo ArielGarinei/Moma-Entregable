@@ -11,23 +11,27 @@ public class Mensaje {
     private String nombre;
     private String fotoPerfil;
     private String type_mensaje;
+    private String emisor;
 
     public Mensaje() {
     }
 
-    public Mensaje(String mensaje, String nombre, String fotoPerfil, String type_mensaje) {
+
+    public Mensaje(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
         this.mensaje = mensaje;
         this.nombre = nombre;
         this.fotoPerfil = fotoPerfil;
         this.type_mensaje = type_mensaje;
+        this.emisor = emisor;
     }
 
-    public Mensaje(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje) {
+    public Mensaje(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
         this.mensaje = mensaje;
         this.urlFoto = urlFoto;
         this.nombre = nombre;
         this.fotoPerfil = fotoPerfil;
         this.type_mensaje = type_mensaje;
+        this.emisor = emisor;
     }
 
     public String getMensaje() {
@@ -68,5 +72,13 @@ public class Mensaje {
 
     public void setUrlFoto(String urlFoto) {
         this.urlFoto = urlFoto;
+    }
+
+    public String getEmisor() {
+        return emisor;
+    }
+
+    public void setEmisor(String emisor) {
+        this.emisor = emisor;
     }
 }

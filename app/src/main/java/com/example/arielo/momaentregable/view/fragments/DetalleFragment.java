@@ -12,12 +12,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
@@ -26,20 +24,12 @@ import com.example.arielo.momaentregable.model.Pintura;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -57,6 +47,9 @@ public class DetalleFragment extends Fragment {
     FloatingActionButton buttonFoto;
     FloatingActionButton buttonUpload;
     ProgressBar progressBar;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
+    StorageReference imageRef;
 
 
     public static final String ARTISTA = "artist";
@@ -122,17 +115,14 @@ public class DetalleFragment extends Fragment {
     }
 
     public void downloadImagenFirebaseUI(ImageView imageView, Pintura pintura){
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageRef = storageReference.child(pintura.getImage());
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        imageRef = storageReference.child(pintura.getImage());
         Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
     }
 
     public void uploadFacha() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child("fotosUsuarios");
-
+        imageRef = imageRef.child("fotosUsuarios");
         imageViewFoto.setDrawingCacheEnabled(true);
         imageViewFoto.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
