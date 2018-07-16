@@ -19,8 +19,8 @@ public interface DAOPaint {
     @Query("SELECT * FROM Paint")
     List<Paint> getAllPinturas();
 
-    @Query("SELECT * FROM Paint WHERE artistId Like :id")
-    Paint getPaitWithId(String id);
+    @Query("SELECT * FROM Paint WHERE name Like :name")
+    Paint getPaitWithName(String name);
 
     @Insert
     void insertAll(Paint... paint);

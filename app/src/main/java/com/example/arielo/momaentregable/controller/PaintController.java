@@ -24,12 +24,12 @@ public class PaintController {
 
     public void obtenerPaints(final ResultListener<List<Paint>> escuchadorVista){
 
-        if(hayInternet()){                                                                          //Si hay internet busco en retrofit
+        if(hayInternet()){
             ResultListener<List<Paint>> escuchadorControlador = new ResultListener<List<Paint>>() {
                 @Override
                 public void finish(List<Paint> resultado) {
                     PaintControllerRoom controllerRoomPaints = new PaintControllerRoom(context);
-                    for (Paint unPaint : resultado ) {                                              //Actualizo la lista en Room
+                    for (Paint unPaint : resultado ) {
                         controllerRoomPaints.removePaint(unPaint);
                         controllerRoomPaints.addPaint(unPaint);
                     }
@@ -40,7 +40,7 @@ public class PaintController {
             DAO_PaintRetrofit dao_paintRetrofit = new DAO_PaintRetrofit();
             dao_paintRetrofit.obtenerPaintsDeInternet(escuchadorControlador);
         }
-        else {                                                                                     //Sino en room
+        else {
             PaintControllerRoom paintControllerRoom = new PaintControllerRoom(context);
             escuchadorVista.finish(paintControllerRoom.getPaints());
         }
@@ -50,10 +50,8 @@ public class PaintController {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            //Toast.makeText(context, "Hay internet", Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            //Toast.makeText(context, "NO hay internet", Toast.LENGTH_SHORT).show();
             return false;
         }
     }

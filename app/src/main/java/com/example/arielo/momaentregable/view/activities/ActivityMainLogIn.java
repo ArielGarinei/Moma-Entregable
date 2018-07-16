@@ -36,7 +36,6 @@ public class ActivityMainLogIn extends AppCompatActivity {
     private EditText textViewEmail, textViewPassword;
     private Button buttonLogin, buttonSignIn;
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase;
 
     @Override
@@ -85,7 +84,7 @@ public class ActivityMainLogIn extends AppCompatActivity {
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ActivityMainLogIn.this, ActivitySignIn.class));
+                startActivity(new Intent(ActivityMainLogIn.this, ActivitySignUp.class));
             }
         });
 
@@ -146,8 +145,8 @@ public class ActivityMainLogIn extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in firebaseUser's information
-                            firebaseUser = firebaseAuth.getCurrentUser();
-
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                            guardarUsuarioFacebook(firebaseUser);
 
                         } else {
 
@@ -183,7 +182,7 @@ public class ActivityMainLogIn extends AppCompatActivity {
         startActivity(new Intent(ActivityMainLogIn.this, ActivityRecycler.class));
     }
 
-    private void guardarUsuarioFacebook() {
+    private void guardarUsuarioFacebook(FirebaseUser firebaseUser) {
                             User user = new User();
                             user.setEmail(firebaseUser.getEmail());
                             user.setName(firebaseUser.getDisplayName());

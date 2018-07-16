@@ -8,10 +8,9 @@ import java.io.Serializable;
 public class Paint implements Serializable {
     @PrimaryKey
     @NonNull
+    private String name;
     private String artistId;
     private String image;
-    private String name;
-
 
     public String getImage() {
         return image;

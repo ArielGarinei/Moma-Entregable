@@ -18,14 +18,16 @@ public class Artist implements Serializable {
 
     @PrimaryKey
     @NonNull
+    @PropertyName("name")
+    public String name;
+
     @PropertyName("artistId")
     public String artistId;
 
     @PropertyName("Influenced_by")
     public String influencedBy;
 
-    @PropertyName("name")
-    public String name;
+
 
     @PropertyName("nationality")
     public String nationality;

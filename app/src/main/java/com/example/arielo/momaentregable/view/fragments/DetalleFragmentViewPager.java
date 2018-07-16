@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.controller.ArtistController;
-import com.example.arielo.momaentregable.helper.ResultListener;
 import com.example.arielo.momaentregable.controller.PaintController;
+import com.example.arielo.momaentregable.helper.ResultListener;
 import com.example.arielo.momaentregable.model.pojo.Artist;
 import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.example.arielo.momaentregable.view.adapter.ViewPagerAdapter;
@@ -41,7 +41,7 @@ public class DetalleFragmentViewPager extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_fragment_view_pager, container, false);
         viewPager = view.findViewById(R.id.contenedorDeFragmentosViewPager);
-        queseyoAlexEstaReLoco();
+        pedirArtistas();
 
         return view;
     }
@@ -68,7 +68,7 @@ public class DetalleFragmentViewPager extends Fragment {
         referencelista.addListenerForSingleValueEvent(valueEventListener);
     }*/
 
-    private void queseyoAlexEstaReLoco(){
+    private void pedirArtistas(){
         ArtistController artistController = new ArtistController(getContext());
         artistController.obtenerArtists(new ResultListener<List<Artist>>() {
             @Override
@@ -77,6 +77,7 @@ public class DetalleFragmentViewPager extends Fragment {
                 queseyo();
             }
         });
+
     }
     private void queseyo() {
         PaintController paintController = new PaintController(getContext());

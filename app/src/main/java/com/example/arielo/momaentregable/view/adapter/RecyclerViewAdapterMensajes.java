@@ -29,8 +29,8 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
     private FirebaseUser usuarioActual;
     private List<MessageReceive> listMensaje = new ArrayList<>();
     private Context context;
-    private static final int ENVIADO = 0;
-    private static final int RECIBIDO = 1;
+    private static final int SEND = 0;
+    private static final int RECEIVE = 1;
 
 
     public RecyclerViewAdapterMensajes(Context context) {

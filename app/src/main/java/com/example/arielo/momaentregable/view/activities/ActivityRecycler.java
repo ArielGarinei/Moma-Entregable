@@ -24,9 +24,9 @@ import static com.example.arielo.momaentregable.view.fragments.DetalleFragmentVi
 public class ActivityRecycler extends AppCompatActivity  implements FragmentRecyclerView.NotificadorDeActivityRVA {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ImageView imageViewFotoUsuario;
-    private TextView textViewNombreUsuario;
-    private FirebaseUser usuarioActual;
+    private ImageView imageViewPhotoUser;
+    private TextView textViewNameUser;
+    private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
 
 
@@ -35,18 +35,18 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler);
         firebaseAuth = FirebaseAuth.getInstance();
-        usuarioActual = firebaseAuth.getCurrentUser();
+        firebaseUser = firebaseAuth.getCurrentUser();
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(new ListenerMenu());
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedorDeFragmentosActivityRecycler,new FragmentRecyclerView()).commit();
         View viewHeader = navigationView.getHeaderView(0);
-        textViewNombreUsuario = viewHeader.findViewById(R.id.textViewNombreUsuario_NavigationViewHeader);
-        imageViewFotoUsuario = viewHeader.findViewById(R.id.imageViewFotoUsuario_NavigationViewHeader);
-        if (usuarioActual != null) {
-            textViewNombreUsuario.setText(usuarioActual.getDisplayName());
-            Glide.with(this).load(usuarioActual.getPhotoUrl() + "/picture?type=large").into(imageViewFotoUsuario);
+        textViewNameUser = viewHeader.findViewById(R.id.textViewNameUser_NavigationViewHeader);
+        imageViewPhotoUser = viewHeader.findViewById(R.id.imageViewPhotoUser_NavigationViewHeader);
+        if (firebaseUser != null) {
+            textViewNameUser.setText(firebaseUser.getDisplayName());
+            Glide.with(this).load(firebaseUser.getPhotoUrl() + "/picture?type=large").into(imageViewPhotoUser);
         }
     }
 
@@ -58,14 +58,14 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
                     startActivity(new Intent(ActivityRecycler.this,ActivityMainLogIn.class));
 
                     break;
-                case R.id.itemCerrarSesion:
+                case R.id.itemSignOut:
                     FirebaseAuth.getInstance().signOut();
                     LoginManager.getInstance().logOut();
                     startActivity(new Intent(ActivityRecycler.this,ActivityMainLogIn.class));
 
                     break;
                 case R.id.itemChatOnline:
-                    if (usuarioActual.getDisplayName() != null){
+                    if (firebaseUser.getDisplayName() != null){
                         startActivity(new Intent(ActivityRecycler.this,ActivityChat.class));
                     }else {
                         Toast.makeText(ActivityRecycler.this, "DEBE LOGEARSE CON FACEBOOK PARA USAR EL CHAT", Toast.LENGTH_SHORT).show();

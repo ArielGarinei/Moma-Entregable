@@ -28,7 +28,7 @@
         <activity android:name=".view.activities.ActivityDetail" />
         <activity android:name=".view.activities.ActivityRecycler" />
         <activity android:name=".view.activities.ActivityChat" />
-        <activity android:name=".view.activities.ActivitySignIn"></activity>
+        <activity android:name=".view.activities.ActivitySignUp"></activity>
     </application>
 
 </manifest>

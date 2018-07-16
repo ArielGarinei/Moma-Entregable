@@ -19,8 +19,8 @@ public interface DAOArtist {
     @Query("SELECT * FROM Artist")
     List<Artist> getAllArtists();
 
-    @Query("SELECT * FROM Artist WHERE artistId Like :id")
-    Artist getArtistWhithId(String id);
+    @Query("SELECT * FROM Artist WHERE name Like :name")
+    Artist getArtistWhithName(String name);
 
     @Insert
     void insertAll(Artist... artist);

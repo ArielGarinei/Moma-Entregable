@@ -29,35 +29,33 @@ public class ArtistController {
 
     public void obtenerArtists(final ResultListener<List<Artist>> escuchadorDeLaVista){
 
-        if(hayInternet()){                                                                          //Si hay internet
+        if(hayInternet()){
             final List<Artist> artistList = new ArrayList<>();
-            DatabaseReference mDataBase;
+            DatabaseReference databaseReference;
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            mDataBase = firebaseDatabase.getReference();
-            DatabaseReference reference = mDataBase.child("artists");
+            databaseReference = firebaseDatabase.getReference();
+            DatabaseReference reference = databaseReference.child("artists");
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     ArtistControllerRoom controllerRoomArtists = new ArtistControllerRoom(context);
                     for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()){
-                        Artist artistLeido = dataSnapshotChild.getValue(Artist.class);
-                        artistList.add(artistLeido);
+                        Artist unArtist = dataSnapshotChild.getValue(Artist.class);
+                        artistList.add(unArtist);
 
-                        controllerRoomArtists.removeArtist(artistLeido);
-                        controllerRoomArtists.addArtist(artistLeido);
+                        controllerRoomArtists.removeArtist(unArtist);
+                        controllerRoomArtists.addArtist(unArtist);
                     }
-                    //Toast.makeText(context, artistList.toString(), Toast.LENGTH_SHORT).show();
                     escuchadorDeLaVista.finish(artistList);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(context, "Error al cargar!", Toast.LENGTH_SHORT).show();
                 }
             };
             reference.addValueEventListener(valueEventListener);
 
 
-        } else {                                                                                    //Si no hay internet
+        } else {
             ArtistControllerRoom artistControllerRoom = new ArtistControllerRoom(context);
             escuchadorDeLaVista.finish(artistControllerRoom.getArtists());
         }
@@ -67,10 +65,8 @@ public class ArtistController {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(context, "Hay internet", Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(context, "NO hay internet", Toast.LENGTH_SHORT).show();
             return false;
         }
     }

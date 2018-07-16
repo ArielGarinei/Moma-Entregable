@@ -5,32 +5,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="10sp">
+    android:padding="10dp">
     <EditText
-        android:id="@+id/idRegistroNombre"
+        android:id="@+id/editTextRegistroName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nombre"/>
     <EditText
-        android:id="@+id/idRegistroCorreo"
+        android:id="@+id/editTextRegistroEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Correo"
         android:inputType="textEmailAddress"/>
     <EditText
-        android:id="@+id/idRegistroContraseña"
+        android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Contraseña"
         android:inputType="textPassword"/>
     <EditText
-        android:id="@+id/idRegistroContraseñaRepetida"
+        android:id="@+id/editTextRegistroPasswordRepeat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Repetir contraseña"
         android:inputType="textPassword"/>
     <Button
-        android:id="@+id/idRegistroRegistrar"
+        android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Registrar"/>
