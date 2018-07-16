@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.Pintura;
+import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -19,12 +19,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter{
-    private List<Pintura> pinturaList;
+    private List<Paint> paintList;
     private Context context;
     private EscuchadorDePinturas escuchadorDePinturas;
 
-    public RecyclerViewAdapter(List<Pintura> pinturaList,EscuchadorDePinturas escuchadorDePinturas) {
-        this.pinturaList = pinturaList;
+    public RecyclerViewAdapter(List<Paint> paintList, EscuchadorDePinturas escuchadorDePinturas) {
+        this.paintList = paintList;
         this.escuchadorDePinturas = escuchadorDePinturas;
 
     }
@@ -40,15 +40,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Pintura pinturaEnPosicion = pinturaList.get(position);
+        Paint paintEnPosicion = paintList.get(position);
         ViewHolderPintura viewHolderPintura = (ViewHolderPintura) holder;
-        viewHolderPintura.bindPintura(pinturaEnPosicion);
+        viewHolderPintura.bindPintura(paintEnPosicion);
 
     }
 
     @Override
     public int getItemCount() {
-        return pinturaList.size();
+        return paintList.size();
     }
 
     private class ViewHolderPintura extends RecyclerView.ViewHolder{
@@ -72,13 +72,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
             });
         }
 
-        public void bindPintura(Pintura pinturaEnPosicion) {
+        public void bindPintura(Paint paintEnPosicion) {
 
 
-            //textViewTituloPintura.setText(pinturaEnPosicion.getName());
-            //textViewTituloPintura.setText(pinturaEnPosicion.getName());
-            textViewTituloPintura.setText(pinturaEnPosicion.getName());
-            downloadImagenFirebaseUI(imageViewImagePinturaCelda,pinturaEnPosicion);
+            //textViewTituloPintura.setText(paintEnPosicion.getName());
+            //textViewTituloPintura.setText(paintEnPosicion.getName());
+            textViewTituloPintura.setText(paintEnPosicion.getName());
+            downloadImagenFirebaseUI(imageViewImagePinturaCelda, paintEnPosicion);
 
         }
 
@@ -87,10 +87,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter{
     public interface EscuchadorDePinturas{
         public void seleccionaronLaPintura(int posicion);
     }
-    public void downloadImagenFirebaseUI(ImageView imageView, Pintura pintura){
+    public void downloadImagenFirebaseUI(ImageView imageView, Paint paint){
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference imageRef = storageReference.child(pintura.getImage());
+        StorageReference imageRef = storageReference.child(paint.getImage());
         Glide.with(context).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
     }
 }

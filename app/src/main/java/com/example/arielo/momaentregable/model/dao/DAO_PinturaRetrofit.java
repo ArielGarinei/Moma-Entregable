@@ -1,7 +1,9 @@
-package com.example.arielo.momaentregable.model;
+package com.example.arielo.momaentregable.model.dao;
 
-import com.example.arielo.momaentregable.ResultListener;
-import com.example.arielo.momaentregable.ServicePintura;
+import com.example.arielo.momaentregable.helper.ResultListener;
+import com.example.arielo.momaentregable.helper.ServicePintura;
+import com.example.arielo.momaentregable.model.contenedores.ContenedorPintura;
+import com.example.arielo.momaentregable.model.pojo.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +29,18 @@ public class DAO_PinturaRetrofit {
         servicePintura = retrofit.create(ServicePintura.class);
     }
 
-    public void obtenerPinturasDeInternet(final ResultListener<List<Pintura>> escuchadorDelControlador){
+    public void obtenerPinturasDeInternet(final ResultListener<List<Paint>> escuchadorDelControlador){
         Call<ContenedorPintura> retrofitListener = servicePintura.getPintura();
         retrofitListener.enqueue(new Callback<ContenedorPintura>() {
             @Override
             public void onResponse(Call<ContenedorPintura> call, Response<ContenedorPintura> response) {
                 ContenedorPintura contenedorPintura = response.body();
-                escuchadorDelControlador.finish(contenedorPintura.getPinturaList());
+                escuchadorDelControlador.finish(contenedorPintura.getPaintList());
             }
 
             @Override
             public void onFailure(Call<ContenedorPintura> call, Throwable t) {
-                escuchadorDelControlador.finish(new ArrayList<Pintura>());
+                escuchadorDelControlador.finish(new ArrayList<Paint>());
             }
         });
 

@@ -1,11 +1,13 @@
 package com.example.arielo.momaentregable.controller;
 
-import com.example.arielo.momaentregable.ResultListener;
-import com.example.arielo.momaentregable.model.DAO_PinturaArchivo;
-import com.example.arielo.momaentregable.model.DAO_PinturaRetrofit;
-import com.example.arielo.momaentregable.model.Pintura;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
-import java.security.Permission;
+import com.example.arielo.momaentregable.helper.ResultListener;
+import com.example.arielo.momaentregable.model.dao.DAO_PinturaRetrofit;
+import com.example.arielo.momaentregable.model.pojo.Paint;
+
 import java.util.List;
 
 /**
@@ -14,25 +16,45 @@ import java.util.List;
 
 public class PinturaController {
 
-    public void obtenerPintura(final ResultListener<List<Pintura>> escuchadorDeLaVista){
-        ResultListener<List<Pintura>> escuchadorDelControlador = new ResultListener<List<Pintura>>() {
-            @Override
-            public void finish(List<Pintura> resultado) {
-                escuchadorDeLaVista.finish(resultado);
-            }
-        };
-        List<Pintura> pinturaList = null;
-        if (hayInternet()){
-            DAO_PinturaRetrofit dao_pinturaRetrofit = new DAO_PinturaRetrofit();
-            dao_pinturaRetrofit.obtenerPinturasDeInternet(escuchadorDelControlador);
-        }/*else {
-            DAO_PinturaArchivo dao_pinturaArchivo = new DAO_PinturaArchivo();
-            pinturaList = dao_pinturaArchivo.obtenerPinturasDeArchivo();
-            escuchadorDeLaVista.finish(pinturaList);
-        }*/
+    Context context;
+
+    public PinturaController(Context context) {
+        this.context = context;
     }
 
-    public Boolean hayInternet(){
-        return true;
+    public void obtenerPaints(final ResultListener<List<Paint>> escuchadorVista){
+
+        if(hayInternet()){                                                                          //Si hay internet busco en retrofit
+            ResultListener<List<Paint>> escuchadorControlador = new ResultListener<List<Paint>>() {
+                @Override
+                public void finish(List<Paint> resultado) {
+                    PinturaControllerRoom controllerRoomPaints = new PinturaControllerRoom(context);
+                    for (Paint unPaint : resultado ) {                                              //Actualizo la lista en Room
+                        controllerRoomPaints.removePaint(unPaint);
+                        controllerRoomPaints.addPaint(unPaint);
+                    }
+                    escuchadorVista.finish(resultado);
+                }
+            };
+
+            DAO_PinturaRetrofit dao_pinturaRetrofit = new DAO_PinturaRetrofit();
+            dao_pinturaRetrofit.obtenerPinturasDeInternet(escuchadorControlador);
+        }
+        else {                                                                                     //Sino en room
+            PinturaControllerRoom pinturaControllerRoom = new PinturaControllerRoom(context);
+            escuchadorVista.finish(pinturaControllerRoom.getPaints());
+        }
+    }
+
+    private boolean hayInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            //Toast.makeText(context, "Hay internet", Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            //Toast.makeText(context, "NO hay internet", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

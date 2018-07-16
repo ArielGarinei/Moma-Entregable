@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.Usuario;
+import com.example.arielo.momaentregable.model.pojo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

@@ -1,4 +1,4 @@
-package com.example.arielo.momaentregable.model;
+package com.example.arielo.momaentregable.model.pojo;
 
 /**
  * Created by Arielo on 11/7/2018.

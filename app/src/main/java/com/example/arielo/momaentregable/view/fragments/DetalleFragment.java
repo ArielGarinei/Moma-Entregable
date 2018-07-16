@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.Artist;
-import com.example.arielo.momaentregable.model.Pintura;
+import com.example.arielo.momaentregable.model.pojo.Artist;
+import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,20 +48,25 @@ public class DetalleFragment extends Fragment {
     TextView textViewNacionalidad;
     FloatingActionButton buttonFoto;
     FloatingActionButton buttonUpload;
+    FloatingActionButton buttonDownload;
     ProgressBar progressBar;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     StorageReference imageRef;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser usuarioActual;
+    Artist artist;
+    Paint paint;
 
 
     public static final String ARTISTA = "artist";
     public static final String PINTURA = "paint";
 
-    public static DetalleFragment creadorDeFragmentos (Pintura pintura, Artist artist){
+    public static DetalleFragment creadorDeFragmentos (Paint paint, Artist artist){
         DetalleFragment detalleFragment = new DetalleFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ARTISTA,artist);
-        bundle.putSerializable(PINTURA,pintura);
+        bundle.putSerializable(ARTISTA, artist);
+        bundle.putSerializable(PINTURA, paint);
         detalleFragment.setArguments(bundle);
         return detalleFragment;
 
@@ -90,39 +97,53 @@ public class DetalleFragment extends Fragment {
         imageViewFoto = view.findViewById(R.id.imageViewFoto);
         buttonFoto = view.findViewById(R.id.botonCamara);
         buttonUpload = view.findViewById(R.id.botonUpload);
+        buttonDownload = view.findViewById(R.id.buttonDownload);
+        firebaseAuth = FirebaseAuth.getInstance();
+        usuarioActual = firebaseAuth.getCurrentUser();
         Bundle bundle = getArguments();
-        final Artist artist = (Artist) bundle.getSerializable(ARTISTA);
-        final Pintura pintura = (Pintura) bundle.getSerializable(PINTURA);
-        textViewNombrePintura.setText(pintura.getName());
+        artist = (Artist) bundle.getSerializable(ARTISTA);
+        paint = (Paint) bundle.getSerializable(PINTURA);
+        textViewNombrePintura.setText(paint.getName());
         textViewNombreArtista.setText(artist.getName());
         textViewNacionalidad.setText(artist.getNationality());
         textViewInfluencias.setText(artist.getInfluencedBy());
-        downloadImagenFirebaseUI(imageViewPintura,pintura);
+        downloadImagenFirebaseUI(imageViewPintura, paint);
         buttonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takeFacha();
+                takeFoto();
             }
         });
         buttonUpload.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        uploadFacha();
+        uploadFotoUsuario();
     }
 });
+        buttonDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadImagenFirebaseUIFotoUsuario(imageViewFoto);
+            }
+        });
 
         return view;
     }
 
-    public void downloadImagenFirebaseUI(ImageView imageView, Pintura pintura){
+    public void downloadImagenFirebaseUI(ImageView imageView, Paint paint){
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
-        imageRef = storageReference.child(pintura.getImage());
+        imageRef = storageReference.child(paint.getImage());
         Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
     }
-
-    public void uploadFacha() {
-        imageRef = imageRef.child("fotosUsuarios");
+    public void downloadImagenFirebaseUIFotoUsuario(ImageView imageView){
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        imageRef = storageReference.child("fotosUsuarios").child(paint.getImage() + usuarioActual.getUid());
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
+    }
+    public void uploadFotoUsuario() {
+        imageRef = imageRef.child("fotosUsuarios").child(paint.getImage()+ usuarioActual.getUid());
         imageViewFoto.setDrawingCacheEnabled(true);
         imageViewFoto.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
@@ -148,7 +169,7 @@ public class DetalleFragment extends Fragment {
         });
     }
 
-    public void takeFacha() {
+    public void takeFoto() {
         EasyImage.openCamera(this, 1);
     }
 
@@ -168,6 +189,7 @@ public class DetalleFragment extends Fragment {
                 File imageFile = imagesFiles.get(0);
                 Bitmap bitmapDeImagen = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
                 imageViewFoto.setImageBitmap(bitmapDeImagen);
+                imageViewFoto.setVisibility(View.VISIBLE);
 
 
             }

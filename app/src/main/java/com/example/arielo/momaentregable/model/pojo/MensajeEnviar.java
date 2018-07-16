@@ -1,4 +1,4 @@
-package com.example.arielo.momaentregable.model;
+package com.example.arielo.momaentregable.model.pojo;
 
 import java.util.Map;
 

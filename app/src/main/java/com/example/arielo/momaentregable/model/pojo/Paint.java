@@ -1,10 +1,17 @@
-package com.example.arielo.momaentregable.model;
-import java.io.Serializable;
+package com.example.arielo.momaentregable.model.pojo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-public class Pintura implements Serializable {
+import java.io.Serializable;
+@Entity
+public class Paint implements Serializable {
+    @PrimaryKey
+    @NonNull
+    private String artistId;
     private String image;
     private String name;
-    private String artistId;
+
 
     public String getImage() {
         return image;

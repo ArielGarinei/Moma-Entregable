@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Aca va a ir el nombreUsuario del artista"
+            android:text="Aca va a ir el nombreUsuario del artist"
             android:textSize="20dp" />
     </LinearLayout>
         <LinearLayout
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Aca va a ir la nacion del artista"
+                android:text="Aca va a ir la nacion del artist"
                 android:textSize="20dp" />
         </LinearLayout>
     <LinearLayout
@@ -105,6 +105,7 @@
 
     </LinearLayout>
         <ImageView
+            android:visibility="gone"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
@@ -116,6 +117,7 @@
             >
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/botonUpload"
+                app:fabSize="normal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
@@ -125,12 +127,20 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/botonCamara"
+                app:fabSize="normal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="20dp"
                 android:src="@drawable/ic_camera_alt_black_24dp"/>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/buttonDownload"
+                app:fabSize="normal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_cloud_download_black_24dp"/>
 
         </RelativeLayout>
 

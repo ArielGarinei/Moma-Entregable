@@ -10,21 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.ResultListener;
+import com.example.arielo.momaentregable.helper.ResultListener;
 import com.example.arielo.momaentregable.controller.PinturaController;
+import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapter;
-import com.example.arielo.momaentregable.model.Artist;
-import com.example.arielo.momaentregable.model.Pintura;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapter.EscuchadorDePinturas {
-    private List<Pintura> pinturaList;
+    private List<Paint> paintList;
     private RecyclerView recyclerView;
     private NotificadorDeActivityRVA notificadorDeActivityRVA;
 
@@ -52,12 +46,12 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
     }
 
     public void  cargarPinturas(){
-        PinturaController pinturaController = new PinturaController();
-        pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
+        PinturaController pinturaController = new PinturaController(getContext());
+        pinturaController.obtenerPaints(new ResultListener<List<Paint>>() {
         @Override
-        public void finish(List<Pintura> resultado) {
-            pinturaList = resultado;
-            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(pinturaList,FragmentRecyclerView.this);
+        public void finish(List<Paint> resultado) {
+            paintList = resultado;
+            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(paintList,FragmentRecyclerView.this);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.MensajeRecibir;
+import com.example.arielo.momaentregable.model.pojo.MensajeRecibir;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

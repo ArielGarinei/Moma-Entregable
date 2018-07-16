@@ -1,21 +1,19 @@
 package com.example.arielo.momaentregable.view.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.ResultListener;
+import com.example.arielo.momaentregable.controller.ArtistsController;
+import com.example.arielo.momaentregable.helper.ResultListener;
 import com.example.arielo.momaentregable.controller.PinturaController;
-import com.example.arielo.momaentregable.model.Artist;
-import com.example.arielo.momaentregable.model.Pintura;
-import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapter;
+import com.example.arielo.momaentregable.model.pojo.Artist;
+import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.example.arielo.momaentregable.view.adapter.ViewPagerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +29,9 @@ import java.util.List;
  */
 public class DetalleFragmentViewPager extends Fragment {
     private ViewPager viewPager;
-    private List<Pintura> pinturaList;
+    private List<Paint> paintList;
     private List<Artist> artistList;
     private ViewPagerAdapter viewPagerAdapter;
-    private PinturaController pinturaController;
     public static final String POSICION = "posicion";
 
 
@@ -50,16 +47,16 @@ public class DetalleFragmentViewPager extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_fragment_view_pager, container, false);
         viewPager = view.findViewById(R.id.contenedorDeFragmentosViewPager);
-        LeerLista(view);
+        queseyoAlexEstaReLoco();
 
         return view;
     }
 
-    public void LeerLista(View view){
+ /*   public void LeerLista(){
         DatabaseReference mDatabase;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         mDatabase= firebaseDatabase.getReference();
-        DatabaseReference referencelista = mDatabase.child("artists");
+        DatabaseReference referencelista = mDatabase.child("artist");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,15 +72,25 @@ public class DetalleFragmentViewPager extends Fragment {
             }
         };
         referencelista.addListenerForSingleValueEvent(valueEventListener);
-    }
+    }*/
 
-    private void queseyo() {
-        pinturaController = new PinturaController();
-        pinturaController.obtenerPintura(new ResultListener<List<Pintura>>() {
+    private void queseyoAlexEstaReLoco(){
+        ArtistsController artistsController = new ArtistsController(getContext());
+        artistsController.obtenerArtista(new ResultListener<List<Artist>>() {
             @Override
-            public void finish(List<Pintura> resultado) {
-                pinturaList = resultado;
-                viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), artistList, pinturaList);
+            public void finish(List<Artist> resultado) {
+                artistList = resultado;
+                queseyo();
+            }
+        });
+    }
+    private void queseyo() {
+        PinturaController pinturaController = new PinturaController(getContext());
+        pinturaController.obtenerPaints(new ResultListener<List<Paint>>() {
+            @Override
+            public void finish(List<Paint> resultado) {
+                paintList = resultado;
+                viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), artistList, paintList);
                 viewPager.setAdapter(viewPagerAdapter);
                 Bundle bundle = getArguments();
                 int posicion = bundle.getInt(POSICION);
