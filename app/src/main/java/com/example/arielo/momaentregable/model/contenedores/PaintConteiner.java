@@ -9,11 +9,11 @@ import java.util.List;
  * Created by Arielo on 17/6/2018.
  */
 
-public class ContenedorPintura {
+public class PaintConteiner {
     @SerializedName("paints")
     List<Paint> paintList;
 
-    public ContenedorPintura(List<Paint> paintList) {
+    public PaintConteiner(List<Paint> paintList) {
         this.paintList = paintList;
     }
 

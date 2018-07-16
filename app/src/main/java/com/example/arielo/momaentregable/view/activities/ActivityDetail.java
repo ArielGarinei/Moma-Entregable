@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.view.fragments.DetalleFragmentViewPager;
 
-public class ActivityDetalle extends AppCompatActivity {
+public class ActivityDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

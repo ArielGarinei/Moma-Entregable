@@ -11,11 +11,11 @@ import java.util.List;
  * Created by Arielo on 16/7/2018.
  */
 
-public class PinturaControllerRoom {
+public class PaintControllerRoom {
 
     private Context context;
 
-    public PinturaControllerRoom(Context context) {
+    public PaintControllerRoom(Context context) {
         this.context = context;
     }
 

@@ -11,24 +11,24 @@ import java.util.List;
  * Created by Arielo on 15/7/2018.
  */
 
-public class Database {
+public class DatabaseArtist {
     private RoomAppDatabase db;
 
-    public Database(Context context) {
+    public DatabaseArtist(Context context) {
         this.db = Room.databaseBuilder(context, RoomAppDatabase.class, "database-name").allowMainThreadQueries().build();
     }
 
     //DAO Artist
     public List<Artist> getAllArtist(){
-        return db.artistaDao().getAllArtists();
+        return db.artistDao().getAllArtists();
     }
 
     public void insertAll(Artist... artists){
-        db.artistaDao().insertAll(artists);
+        db.artistDao().insertAll(artists);
     }
 
     public void delete(Artist artist){
-        db.artistaDao().delete(artist);
+        db.artistDao().delete(artist);
     }
 
 }

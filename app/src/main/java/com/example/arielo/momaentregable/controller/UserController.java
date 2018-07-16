@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.arielo.momaentregable.helper.ResultListener;
 import com.example.arielo.momaentregable.model.pojo.Artist;
+import com.example.arielo.momaentregable.model.pojo.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,34 +21,35 @@ import java.util.List;
  * Created by Arielo on 16/7/2018.
  */
 
-public class ArtistsController {
+public class UserController {
+
     Context context;
 
-    public ArtistsController(Context context) {
+    public UserController(Context context) {
         this.context = context;
     }
 
-    public void obtenerArtista(final ResultListener<List<Artist>> escuchadorVista){
+    public void obtenerUsers(final ResultListener<List<User>> escuchadorDeLaVista){
 
         if(hayInternet()){                                                                          //Si hay internet
-            final ArrayList<Artist> listado = new ArrayList<>();
+            final List<User> userList = new ArrayList<>();
             DatabaseReference mDataBase;
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             mDataBase = firebaseDatabase.getReference();
-            DatabaseReference reference = mDataBase.child("artists");
+            DatabaseReference reference = mDataBase.child("Usuarios");
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    ArtistsControllerRoom controllerRoomArtists = new ArtistsControllerRoom(context);
+                    UserControllerRoom userControllerRoom = new UserControllerRoom(context);
                     for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()){
-                        Artist artistLeido = dataSnapshotChild.getValue(Artist.class);
-                        listado.add(artistLeido);
+                        User UserLeido = dataSnapshotChild.getValue(User.class);
+                        userList.add(UserLeido);
 
-                        controllerRoomArtists.removeArtist(artistLeido);
-                        controllerRoomArtists.addArtist(artistLeido);
+                        userControllerRoom.removeUser(UserLeido);
+                        userControllerRoom.addUser(UserLeido);
                     }
-                    //Toast.makeText(context, listado.toString(), Toast.LENGTH_SHORT).show();
-                    escuchadorVista.finish(listado);
+                    //Toast.makeText(context, userList.toString(), Toast.LENGTH_SHORT).show();
+                    escuchadorDeLaVista.finish(userList);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -58,8 +60,8 @@ public class ArtistsController {
 
 
         } else {                                                                                    //Si no hay internet
-            ArtistsControllerRoom artistsControllerRoom = new ArtistsControllerRoom(context);
-            escuchadorVista.finish(artistsControllerRoom.getArtists());
+            UserControllerRoom userControllerRoom = new UserControllerRoom(context);
+            escuchadorDeLaVista.finish(userControllerRoom.getUser());
         }
     }
 
@@ -74,5 +76,4 @@ public class ArtistsController {
             return false;
         }
     }
-
 }

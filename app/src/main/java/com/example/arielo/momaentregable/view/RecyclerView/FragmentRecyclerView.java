@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.arielo.momaentregable.R;
 import com.example.arielo.momaentregable.helper.ResultListener;
-import com.example.arielo.momaentregable.controller.PinturaController;
+import com.example.arielo.momaentregable.controller.PaintController;
 import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapter;
 
@@ -46,8 +46,8 @@ public class FragmentRecyclerView extends Fragment implements RecyclerViewAdapte
     }
 
     public void  cargarPinturas(){
-        PinturaController pinturaController = new PinturaController(getContext());
-        pinturaController.obtenerPaints(new ResultListener<List<Paint>>() {
+        PaintController paintController = new PaintController(getContext());
+        paintController.obtenerPaints(new ResultListener<List<Paint>>() {
         @Override
         public void finish(List<Paint> resultado) {
             paintList = resultado;

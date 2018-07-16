@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.arielo.momaentregable.view.activities.ActivityDetalle"
+    tools:context="com.example.arielo.momaentregable.view.activities.ActivityDetail"
     android:id="@+id/contenedorDeFragmentosActivityDetalle">
 
 </android.support.constraint.ConstraintLayout>

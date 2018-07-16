@@ -9,19 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.controller.ArtistsController;
+import com.example.arielo.momaentregable.controller.ArtistController;
 import com.example.arielo.momaentregable.helper.ResultListener;
-import com.example.arielo.momaentregable.controller.PinturaController;
+import com.example.arielo.momaentregable.controller.PaintController;
 import com.example.arielo.momaentregable.model.pojo.Artist;
 import com.example.arielo.momaentregable.model.pojo.Paint;
 import com.example.arielo.momaentregable.view.adapter.ViewPagerAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,8 +69,8 @@ public class DetalleFragmentViewPager extends Fragment {
     }*/
 
     private void queseyoAlexEstaReLoco(){
-        ArtistsController artistsController = new ArtistsController(getContext());
-        artistsController.obtenerArtista(new ResultListener<List<Artist>>() {
+        ArtistController artistController = new ArtistController(getContext());
+        artistController.obtenerArtists(new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
                 artistList = resultado;
@@ -85,8 +79,8 @@ public class DetalleFragmentViewPager extends Fragment {
         });
     }
     private void queseyo() {
-        PinturaController pinturaController = new PinturaController(getContext());
-        pinturaController.obtenerPaints(new ResultListener<List<Paint>>() {
+        PaintController paintController = new PaintController(getContext());
+        paintController.obtenerPaints(new ResultListener<List<Paint>>() {
             @Override
             public void finish(List<Paint> resultado) {
                 paintList = resultado;

@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.example.arielo.momaentregable.helper.ResultListener;
-import com.example.arielo.momaentregable.model.dao.DAO_PinturaRetrofit;
+import com.example.arielo.momaentregable.model.dao.DAO_PaintRetrofit;
 import com.example.arielo.momaentregable.model.pojo.Paint;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
  * Created by Arielo on 17/6/2018.
  */
 
-public class PinturaController {
+public class PaintController {
 
     Context context;
 
-    public PinturaController(Context context) {
+    public PaintController(Context context) {
         this.context = context;
     }
 
@@ -28,7 +28,7 @@ public class PinturaController {
             ResultListener<List<Paint>> escuchadorControlador = new ResultListener<List<Paint>>() {
                 @Override
                 public void finish(List<Paint> resultado) {
-                    PinturaControllerRoom controllerRoomPaints = new PinturaControllerRoom(context);
+                    PaintControllerRoom controllerRoomPaints = new PaintControllerRoom(context);
                     for (Paint unPaint : resultado ) {                                              //Actualizo la lista en Room
                         controllerRoomPaints.removePaint(unPaint);
                         controllerRoomPaints.addPaint(unPaint);
@@ -37,12 +37,12 @@ public class PinturaController {
                 }
             };
 
-            DAO_PinturaRetrofit dao_pinturaRetrofit = new DAO_PinturaRetrofit();
-            dao_pinturaRetrofit.obtenerPinturasDeInternet(escuchadorControlador);
+            DAO_PaintRetrofit dao_paintRetrofit = new DAO_PaintRetrofit();
+            dao_paintRetrofit.obtenerPaintsDeInternet(escuchadorControlador);
         }
         else {                                                                                     //Sino en room
-            PinturaControllerRoom pinturaControllerRoom = new PinturaControllerRoom(context);
-            escuchadorVista.finish(pinturaControllerRoom.getPaints());
+            PaintControllerRoom paintControllerRoom = new PaintControllerRoom(context);
+            escuchadorVista.finish(paintControllerRoom.getPaints());
         }
     }
 

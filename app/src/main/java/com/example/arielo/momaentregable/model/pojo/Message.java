@@ -4,7 +4,7 @@ package com.example.arielo.momaentregable.model.pojo;
  * Created by Arielo on 11/7/2018.
  */
 
-public class Mensaje {
+public class Message {
 
     private String mensaje;
     private String urlFoto;
@@ -13,11 +13,11 @@ public class Mensaje {
     private String type_mensaje;
     private String emisor;
 
-    public Mensaje() {
+    public Message() {
     }
 
 
-    public Mensaje(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
+    public Message(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
         this.mensaje = mensaje;
         this.nombre = nombre;
         this.fotoPerfil = fotoPerfil;
@@ -25,7 +25,7 @@ public class Mensaje {
         this.emisor = emisor;
     }
 
-    public Mensaje(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
+    public Message(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
         this.mensaje = mensaje;
         this.urlFoto = urlFoto;
         this.nombre = nombre;

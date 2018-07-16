@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.pojo.MensajeRecibir;
+import com.example.arielo.momaentregable.model.pojo.MessageReceive;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,7 +27,7 @@ import java.util.List;
 public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser usuarioActual;
-    private List<MensajeRecibir> listMensaje = new ArrayList<>();
+    private List<MessageReceive> listMensaje = new ArrayList<>();
     private Context context;
     private static final int ENVIADO = 0;
     private static final int RECIBIDO = 1;
@@ -39,7 +39,7 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
         usuarioActual = firebaseAuth.getCurrentUser();
     }
 
-    public void addMensaje(MensajeRecibir mensajeRecibir){
+    public void addMensaje(MessageReceive mensajeRecibir){
         listMensaje.add(mensajeRecibir);
         notifyItemInserted(listMensaje.size());
     }
@@ -84,7 +84,7 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
                 ((HolderMensajeEviado) holder).getFotoMensajeUsuario().setVisibility(View.GONE);
                 ((HolderMensajeEviado) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
             }
-            if(listMensaje.get(position).getFotoPerfil().isEmpty()){
+            if(listMensaje.get(position).getFotoPerfil()== null){
                 ((HolderMensajeEviado) holder).getFotoMensajePerfilUsuario().setImageResource(R.mipmap.ic_launcher);
             }else{
                 Glide.with(context).load(listMensaje.get(position).getFotoPerfil()).into(((HolderMensajeEviado) holder).getFotoMensajePerfilUsuario());
@@ -104,7 +104,7 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
                 ((HolderMensajeRecibido) holder).getFotoMensajeUsuario().setVisibility(View.GONE);
                 ((HolderMensajeRecibido) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
             }
-            if(listMensaje.get(position).getFotoPerfil().isEmpty()){
+            if(listMensaje.get(position).getFotoPerfil()==null){
                 ((HolderMensajeRecibido) holder).getFotoMensajePerfilUsuario().setImageResource(R.mipmap.ic_launcher);
             }else{
                 Glide.with(context).load(listMensaje.get(position).getFotoPerfil()).into(((HolderMensajeRecibido) holder).getFotoMensajePerfilUsuario());
@@ -247,7 +247,7 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
 
 
 
-        holder.getNombreUsuario().setText(listMensaje.get(position).getNombre());
+        holder.getNombreUsuario().setText(listMensaje.get(position).getName());
                 holder.getMensajeUsuario().setText(listMensaje.get(position).getMensaje());
                 if(listMensaje.get(position).getType_mensaje().equals("2")){
                 holder.getFotoMensajeUsuario().setVisibility(View.VISIBLE);

@@ -1,6 +1,6 @@
 package com.example.arielo.momaentregable.helper;
 
-import com.example.arielo.momaentregable.model.contenedores.ContenedorPintura;
+import com.example.arielo.momaentregable.model.contenedores.PaintConteiner;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,5 +11,5 @@ import retrofit2.http.GET;
 
 public interface ServicePintura {
     @GET("/bins/x858r/")
-    Call<ContenedorPintura>getPintura();
+    Call<PaintConteiner>getPintura();
 }

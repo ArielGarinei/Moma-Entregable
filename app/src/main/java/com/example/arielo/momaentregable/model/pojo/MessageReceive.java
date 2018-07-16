@@ -4,17 +4,17 @@ package com.example.arielo.momaentregable.model.pojo;
  * Created by Arielo on 11/7/2018.
  */
 
-public class MensajeRecibir extends Mensaje {
+public class MessageReceive extends Message {
     private Long hora;
 
-    public MensajeRecibir() {
+    public MessageReceive() {
     }
 
-    public MensajeRecibir(Long hora) {
+    public MessageReceive(Long hora) {
         this.hora = hora;
     }
 
-    public MensajeRecibir(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Long hora) {
+    public MessageReceive(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Long hora) {
         super(mensaje, urlFoto, nombre, fotoPerfil, type_mensaje,tipoMensaje);
         this.hora = hora;
     }

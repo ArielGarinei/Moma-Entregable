@@ -6,22 +6,22 @@ import java.util.Map;
  * Created by Arielo on 11/7/2018.
  */
 
-public class MensajeEnviar extends Mensaje {
+public class MessageSend extends Message {
     private Map hora;
 
-    public MensajeEnviar() {
+    public MessageSend() {
     }
 
-    public MensajeEnviar(Map hora) {
+    public MessageSend(Map hora) {
         this.hora = hora;
     }
 
-    public MensajeEnviar(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Map hora) {
+    public MessageSend(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Map hora) {
         super(mensaje, nombre, fotoPerfil, type_mensaje, tipoMensaje);
         this.hora = hora;
     }
 
-    public MensajeEnviar(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Map hora) {
+    public MessageSend(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String tipoMensaje, Map hora) {
         super(mensaje, urlFoto, nombre, fotoPerfil, type_mensaje, tipoMensaje);
         this.hora = hora;
     }

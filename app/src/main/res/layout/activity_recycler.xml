@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.arielo.momaentregable.view.activities.MainActivity">
+    tools:context="com.example.arielo.momaentregable.view.activities.ActivityMainLogIn">
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

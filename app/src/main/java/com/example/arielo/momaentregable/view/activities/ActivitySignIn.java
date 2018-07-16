@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.arielo.momaentregable.R;
-import com.example.arielo.momaentregable.model.pojo.Usuario;
+import com.example.arielo.momaentregable.model.pojo.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ActivityRegistro extends AppCompatActivity {
+public class ActivitySignIn extends AppCompatActivity {
     private EditText txtNombre,txtCorreo,txtContraseña,txtContraseñaRepetida;
     private Button btnRegistrar;
     private FirebaseAuth mAuth;
@@ -46,27 +46,27 @@ public class ActivityRegistro extends AppCompatActivity {
                 if(isValidEmail(correo) && validarContraseña() && validarNombre(nombre)){
                     String contraseña = txtContraseña.getText().toString();
                     mAuth.createUserWithEmailAndPassword(correo, contraseña)
-                            .addOnCompleteListener(ActivityRegistro.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(ActivitySignIn.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(ActivityRegistro.this, "Se registro correctamente.", Toast.LENGTH_SHORT).show();
-                                        Usuario usuario = new Usuario();
-                                        usuario.setCorreo(correo);
-                                        usuario.setNombre(nombre);
+                                        Toast.makeText(ActivitySignIn.this, "Se registro correctamente.", Toast.LENGTH_SHORT).show();
+                                        User user = new User();
+                                        user.setEmail(correo);
+                                        user.setName(nombre);
                                         FirebaseUser currentUser = mAuth.getCurrentUser();
                                         DatabaseReference reference = database.getReference("Usuarios/"+currentUser.getUid());
-                                        reference.setValue(usuario);
+                                        reference.setValue(user);
                                         finish();
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(ActivityRegistro.this, "Error al registrarse.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ActivitySignIn.this, "Error al registrarse.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                 }else{
-                    Toast.makeText(ActivityRegistro.this, "Validaciones funcionando.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivitySignIn.this, "Validaciones funcionando.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -14,13 +14,13 @@ import java.util.List;
  */
 
 @Dao
-public interface DAOArtista {
+public interface DAOArtist {
 
     @Query("SELECT * FROM Artist")
     List<Artist> getAllArtists();
 
     @Query("SELECT * FROM Artist WHERE artistId Like :id")
-    Artist getArtistWithId(String id);
+    Artist getArtistWhithId(String id);
 
     @Insert
     void insertAll(Artist... artist);

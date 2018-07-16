@@ -54,13 +54,13 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()){
                 case R.id.itemInicio:
-                    startActivity(new Intent(ActivityRecycler.this,MainActivity.class));
+                    startActivity(new Intent(ActivityRecycler.this,ActivityMainLogIn.class));
 
                     break;
                 case R.id.itemCerrarSesion:
                     FirebaseAuth.getInstance().signOut();
                     LoginManager.getInstance().logOut();
-                    startActivity(new Intent(ActivityRecycler.this,MainActivity.class));
+                    startActivity(new Intent(ActivityRecycler.this,ActivityMainLogIn.class));
 
                     break;
                 case R.id.itemChatOnline:
@@ -74,7 +74,7 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
     @Override
     public void notificadorRVA(int posicon) {
 
-        Intent intent = new Intent(ActivityRecycler.this, ActivityDetalle.class);
+        Intent intent = new Intent(ActivityRecycler.this, ActivityDetail.class);
         Bundle bundle = new Bundle();
         bundle.putInt(POSICION,posicon);
         intent.putExtras(bundle);
