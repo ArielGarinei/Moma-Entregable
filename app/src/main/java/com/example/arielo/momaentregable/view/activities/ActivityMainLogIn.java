@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,6 +89,8 @@ public class ActivityMainLogIn extends AppCompatActivity {
             }
         });
 
+
+        corroborarUser();
     }
 
 
@@ -100,8 +103,6 @@ public class ActivityMainLogIn extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 handleFacebookAccessToken(loginResult.getAccessToken());
-               // guardarUsuarioFacebook();
-                iniciarActividadRecycler();
             }
 
             @Override
@@ -147,7 +148,7 @@ public class ActivityMainLogIn extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in firebaseUser's information
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             guardarUsuarioFacebook(firebaseUser);
-
+                            corroborarUser();
                         } else {
 
                         }
@@ -171,11 +172,7 @@ public class ActivityMainLogIn extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            Toast.makeText(this, "User logeado.", Toast.LENGTH_SHORT).show();
-            iniciarActividadRecycler();
-        }
+
     }
 
     private void iniciarActividadRecycler() {
@@ -183,15 +180,22 @@ public class ActivityMainLogIn extends AppCompatActivity {
     }
 
     private void guardarUsuarioFacebook(FirebaseUser firebaseUser) {
-                            User user = new User();
-                            user.setEmail(firebaseUser.getEmail());
-                            user.setName(firebaseUser.getDisplayName());
-                            user.setPhoto(firebaseUser.getPhotoUrl().toString());
-                            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                            DatabaseReference databaseReference = firebaseDatabase.getReference("Usuarios/" + currentUser.getUid());
-                            databaseReference.setValue(user);
-                            finish();
-                    }
+        User user = new User();
+        user.setEmail(firebaseUser.getEmail());
+        user.setName(firebaseUser.getDisplayName());
+        user.setPhoto(firebaseUser.getPhotoUrl().toString());
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("Usuarios/" + currentUser.getUid());
+        databaseReference.setValue(user);
+        finish();
+    }
+    private void corroborarUser(){
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            Toast.makeText(this, "User logeado.", Toast.LENGTH_SHORT).show();
+            iniciarActividadRecycler();
+        }
+    }
 
 }
 

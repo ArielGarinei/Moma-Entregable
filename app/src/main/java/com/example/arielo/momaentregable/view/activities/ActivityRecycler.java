@@ -56,7 +56,6 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
             switch (item.getItemId()){
                 case R.id.itemInicio:
                     startActivity(new Intent(ActivityRecycler.this,ActivityMainLogIn.class));
-
                     break;
                 case R.id.itemSignOut:
                     FirebaseAuth.getInstance().signOut();

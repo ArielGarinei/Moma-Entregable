@@ -6,72 +6,72 @@ package com.example.arielo.momaentregable.model.pojo;
 
 public class Message {
 
-    private String mensaje;
-    private String urlFoto;
-    private String nombre;
-    private String fotoPerfil;
-    private String type_mensaje;
+    private String message;
+    private String urlPhoto;
+    private String name;
+    private String photoUser;
+    private String type_message;
     private String emisor;
 
     public Message() {
     }
 
 
-    public Message(String mensaje, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
-        this.mensaje = mensaje;
-        this.nombre = nombre;
-        this.fotoPerfil = fotoPerfil;
-        this.type_mensaje = type_mensaje;
+    public Message(String message, String name, String photoUser, String type_message, String emisor) {
+        this.message = message;
+        this.name = name;
+        this.photoUser = photoUser;
+        this.type_message = type_message;
         this.emisor = emisor;
     }
 
-    public Message(String mensaje, String urlFoto, String nombre, String fotoPerfil, String type_mensaje, String emisor) {
-        this.mensaje = mensaje;
-        this.urlFoto = urlFoto;
-        this.nombre = nombre;
-        this.fotoPerfil = fotoPerfil;
-        this.type_mensaje = type_mensaje;
+    public Message(String message, String urlPhoto, String name, String photoUser, String type_message, String emisor) {
+        this.message = message;
+        this.urlPhoto = urlPhoto;
+        this.name = name;
+        this.photoUser = photoUser;
+        this.type_message = type_message;
         this.emisor = emisor;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFotoPerfil() {
-        return fotoPerfil;
+    public String getPhotoUser() {
+        return photoUser;
     }
 
-    public void setFotoPerfil(String fotoPerfil) {
-        this.fotoPerfil = fotoPerfil;
+    public void setPhotoUser(String photoUser) {
+        this.photoUser = photoUser;
     }
 
-    public String getType_mensaje() {
-        return type_mensaje;
+    public String getType_message() {
+        return type_message;
     }
 
-    public void setType_mensaje(String type_mensaje) {
-        this.type_mensaje = type_mensaje;
+    public void setType_message(String type_message) {
+        this.type_message = type_message;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
+    public String getUrlPhoto() {
+        return urlPhoto;
     }
 
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
     public String getEmisor() {

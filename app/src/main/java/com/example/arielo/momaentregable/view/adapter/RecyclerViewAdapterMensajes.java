@@ -74,40 +74,40 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HolderMensajeEviado){
-            ((HolderMensajeEviado) holder).getNombreUsuario().setText(listMensaje.get(position).getNombre());
-            ((HolderMensajeEviado) holder).getMensajeUsuario().setText(listMensaje.get(position).getMensaje());
-            if(listMensaje.get(position).getType_mensaje().equals("2")){
+            ((HolderMensajeEviado) holder).getNombreUsuario().setText(listMensaje.get(position).getName());
+            ((HolderMensajeEviado) holder).getMensajeUsuario().setText(listMensaje.get(position).getMessage());
+            if(listMensaje.get(position).getType_message().equals("2")){
                 ((HolderMensajeEviado) holder).getFotoMensajeUsuario().setVisibility(View.VISIBLE);
                 ((HolderMensajeEviado) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
-                Glide.with(context).load(listMensaje.get(position).getUrlFoto()).into(((HolderMensajeEviado) holder).getFotoMensajeUsuario());
-            }else if(listMensaje.get(position).getType_mensaje().equals("1")){
+                Glide.with(context).load(listMensaje.get(position).getUrlPhoto()).into(((HolderMensajeEviado) holder).getFotoMensajeUsuario());
+            }else if(listMensaje.get(position).getType_message().equals("1")){
                 ((HolderMensajeEviado) holder).getFotoMensajeUsuario().setVisibility(View.GONE);
                 ((HolderMensajeEviado) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
             }
-            if(listMensaje.get(position).getFotoPerfil()== null){
+            if(listMensaje.get(position).getPhotoUser()== null){
                 ((HolderMensajeEviado) holder).getFotoMensajePerfilUsuario().setImageResource(R.mipmap.ic_launcher);
             }else{
-                Glide.with(context).load(listMensaje.get(position).getFotoPerfil()).into(((HolderMensajeEviado) holder).getFotoMensajePerfilUsuario());
+                Glide.with(context).load(listMensaje.get(position).getPhotoUser()).into(((HolderMensajeEviado) holder).getFotoMensajePerfilUsuario());
             }
             Long codigoHora = listMensaje.get(position).getHora();
             Date date = new Date(codigoHora);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss a");
             ((HolderMensajeEviado) holder).getHoraUsuario().setText(simpleDateFormat.format(date));
         }else if (holder instanceof HolderMensajeRecibido){
-            ((HolderMensajeRecibido) holder).getNombreUsuario().setText(listMensaje.get(position).getNombre());
-            ((HolderMensajeRecibido) holder).getMensajeUsuario().setText(listMensaje.get(position).getMensaje());
-            if(listMensaje.get(position).getType_mensaje().equals("2")){
+            ((HolderMensajeRecibido) holder).getNombreUsuario().setText(listMensaje.get(position).getName());
+            ((HolderMensajeRecibido) holder).getMensajeUsuario().setText(listMensaje.get(position).getMessage());
+            if(listMensaje.get(position).getType_message().equals("2")){
                 ((HolderMensajeRecibido) holder).getFotoMensajeUsuario().setVisibility(View.VISIBLE);
                 ((HolderMensajeRecibido) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
-                Glide.with(context).load(listMensaje.get(position).getUrlFoto()).into(((HolderMensajeRecibido) holder).getFotoMensajeUsuario());
-            }else if(listMensaje.get(position).getType_mensaje().equals("1")){
+                Glide.with(context).load(listMensaje.get(position).getUrlPhoto()).into(((HolderMensajeRecibido) holder).getFotoMensajeUsuario());
+            }else if(listMensaje.get(position).getType_message().equals("1")){
                 ((HolderMensajeRecibido) holder).getFotoMensajeUsuario().setVisibility(View.GONE);
                 ((HolderMensajeRecibido) holder).getMensajeUsuario().setVisibility(View.VISIBLE);
             }
-            if(listMensaje.get(position).getFotoPerfil()==null){
+            if(listMensaje.get(position).getPhotoUser()==null){
                 ((HolderMensajeRecibido) holder).getFotoMensajePerfilUsuario().setImageResource(R.mipmap.ic_launcher);
             }else{
-                Glide.with(context).load(listMensaje.get(position).getFotoPerfil()).into(((HolderMensajeRecibido) holder).getFotoMensajePerfilUsuario());
+                Glide.with(context).load(listMensaje.get(position).getPhotoUser()).into(((HolderMensajeRecibido) holder).getFotoMensajePerfilUsuario());
             }
             Long codigoHora = listMensaje.get(position).getHora();
             Date date = new Date(codigoHora);
@@ -248,19 +248,19 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
 
 
         holder.getNombreUsuario().setText(listMensaje.get(position).getName());
-                holder.getMensajeUsuario().setText(listMensaje.get(position).getMensaje());
-                if(listMensaje.get(position).getType_mensaje().equals("2")){
+                holder.getMensajeUsuario().setText(listMensaje.get(position).getMessage());
+                if(listMensaje.get(position).getType_message().equals("2")){
                 holder.getFotoMensajeUsuario().setVisibility(View.VISIBLE);
                 holder.getMensajeUsuario().setVisibility(View.VISIBLE);
-                Glide.with(context).load(listMensaje.get(position).getUrlFoto()).into(holder.getFotoMensajeUsuario());
-                }else if(listMensaje.get(position).getType_mensaje().equals("1")){
+                Glide.with(context).load(listMensaje.get(position).getUrlPhoto()).into(holder.getFotoMensajeUsuario());
+                }else if(listMensaje.get(position).getType_message().equals("1")){
                 holder.getFotoMensajeUsuario().setVisibility(View.GONE);
                 holder.getMensajeUsuario().setVisibility(View.VISIBLE);
                 }
-                if(listMensaje.get(position).getFotoPerfil().isEmpty()){
+                if(listMensaje.get(position).getPhotoUser().isEmpty()){
                 holder.getFotoMensajePerfilUsuario().setImageResource(R.mipmap.ic_launcher);
                 }else{
-                Glide.with(context).load(listMensaje.get(position).getFotoPerfil()).into(holder.getFotoMensajePerfilUsuario());
+                Glide.with(context).load(listMensaje.get(position).getPhotoUser()).into(holder.getFotoMensajePerfilUsuario());
                 }
                 Long codigoHora = listMensaje.get(position).getHora();
                 Date date = new Date(codigoHora);
