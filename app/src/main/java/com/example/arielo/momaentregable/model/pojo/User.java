@@ -13,9 +13,19 @@ public class User {
     @NonNull
     private String email;
     private String name;
+    private String photo;
 
 
     public User() {
+    }
+
+    @NonNull
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NonNull String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -26,11 +36,11 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

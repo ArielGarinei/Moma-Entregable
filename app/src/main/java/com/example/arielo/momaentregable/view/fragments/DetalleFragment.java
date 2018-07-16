@@ -39,7 +39,6 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class DetalleFragment extends Fragment {
     View view;
-    List<Artist> artistList;
     ImageView imageViewPintura;
     ImageView imageViewFoto;
     TextView textViewNombrePintura;
@@ -52,7 +51,6 @@ public class DetalleFragment extends Fragment {
     ProgressBar progressBar;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
-    StorageReference imageRef;
     FirebaseAuth firebaseAuth;
     FirebaseUser usuarioActual;
     Artist artist;
@@ -82,6 +80,13 @@ public class DetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_detalle, container, false);
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        usuarioActual = firebaseAuth.getCurrentUser();
+
     /*    progressBar.setVisibility(View.VISIBLE);
         imageViewFoto.setVisibility(View.GONE);
         imageViewPintura.setVisibility(View.GONE);
@@ -89,6 +94,7 @@ public class DetalleFragment extends Fragment {
         textViewInfluencias.setVisibility(View.GONE);
         textViewNombreArtista.setVisibility(View.GONE);
         textViewNombrePintura.setVisibility(View.GONE);*/
+
         imageViewPintura = view.findViewById(R.id.imageViewPintura);
         textViewNombrePintura = view.findViewById(R.id.textViewNombreDeLaPintura);
         textViewNombreArtista= view.findViewById(R.id.textViewNombreDelArtista);
@@ -98,16 +104,19 @@ public class DetalleFragment extends Fragment {
         buttonFoto = view.findViewById(R.id.botonCamara);
         buttonUpload = view.findViewById(R.id.botonUpload);
         buttonDownload = view.findViewById(R.id.buttonDownload);
-        firebaseAuth = FirebaseAuth.getInstance();
-        usuarioActual = firebaseAuth.getCurrentUser();
+
+
         Bundle bundle = getArguments();
         artist = (Artist) bundle.getSerializable(ARTISTA);
         paint = (Paint) bundle.getSerializable(PINTURA);
+
         textViewNombrePintura.setText(paint.getName());
         textViewNombreArtista.setText(artist.getName());
         textViewNacionalidad.setText(artist.getNationality());
         textViewInfluencias.setText(artist.getInfluencedBy());
+
         downloadImagenFirebaseUI(imageViewPintura, paint);
+
         buttonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,19 +140,15 @@ public class DetalleFragment extends Fragment {
     }
 
     public void downloadImagenFirebaseUI(ImageView imageView, Paint paint){
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
-        imageRef = storageReference.child(paint.getImage());
-        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
+        storageReference.child(paint.getImage());
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageView);
     }
     public void downloadImagenFirebaseUIFotoUsuario(ImageView imageView){
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
-        imageRef = storageReference.child("fotosUsuarios").child(paint.getImage() + usuarioActual.getUid());
-        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imageRef).into(imageView);
+        storageReference.child("fotosUsuarios").child(paint.getImage() + usuarioActual.getUid());
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).into(imageView);
     }
     public void uploadFotoUsuario() {
-        imageRef = imageRef.child("fotosUsuarios").child(paint.getImage()+ usuarioActual.getUid());
+        storageReference.child("fotosUsuarios").child(paint.getImage()+ usuarioActual.getUid());
         imageViewFoto.setDrawingCacheEnabled(true);
         imageViewFoto.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
@@ -151,7 +156,7 @@ public class DetalleFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = imageRef.putBytes(data);
+        UploadTask uploadTask = storageReference.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {

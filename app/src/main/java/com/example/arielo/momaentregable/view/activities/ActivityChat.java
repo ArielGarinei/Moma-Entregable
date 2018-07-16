@@ -4,7 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
@@ -25,6 +29,8 @@ import com.example.arielo.momaentregable.model.pojo.MessageSend;
 import com.example.arielo.momaentregable.model.pojo.MessageReceive;
 import com.example.arielo.momaentregable.model.pojo.User;
 import com.example.arielo.momaentregable.view.adapter.RecyclerViewAdapterMensajes;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +45,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityChat extends AppCompatActivity {
@@ -51,6 +59,7 @@ public class ActivityChat extends AppCompatActivity {
     private ImageButton imageButtonSendImage;
 
     private RecyclerViewAdapterMensajes recyclerViewAdapterMensajes;
+    private List<User> userList;
 
 
     private FirebaseAuth firebaseAuth;
@@ -60,7 +69,7 @@ public class ActivityChat extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private FirebaseStorage storage;
-    private StorageReference storageReference;
+
 
     private static final int SEND_PHOTO = 1;
     private static final int CHANGE_USER_PHOTO = 2;
@@ -83,29 +92,9 @@ public class ActivityChat extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-
-        if (firebaseUser.getPhotoUrl() != null ){
-            PHOTO_USER = firebaseUser.getPhotoUrl().toString();
-        }else{
-            imageViewUserPhoto.setImageResource(R.drawable.ic_account_circle_black_24dp);
-        }
-        if (firebaseUser.getDisplayName() == null){
-            final UserController userController = new UserController(this);
-            userController.obtenerUsers(new ResultListener<List<User>>() {
-                @Override
-                public void finish(List<User> resultado) {
-                    for (User userEnPosicion : resultado) {
-                        if (userEnPosicion.getEmail().equals(firebaseUser.getEmail())){
-                            NAME_USER = userEnPosicion.getName();
-                        }
-                    }
-
-
-                }
-            });
-        }else {
-            NAME_USER = firebaseUser.getDisplayName();
-        }
+        NAME_USER = firebaseUser.getDisplayName();
+        textViewNameUser.setText(NAME_USER);
+        Glide.with(ActivityChat.this).load(firebaseUser.getPhotoUrl() + "/picture?type=large").into(imageViewUserPhoto);
 
 
 
@@ -216,6 +205,7 @@ public class ActivityChat extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        StorageReference storageReference;
         if(requestCode == SEND_PHOTO && resultCode == RESULT_OK){
             Uri uri = data.getData();
             storageReference = storage.getReference("imagenes_chat");
@@ -240,6 +230,7 @@ public class ActivityChat extends AppCompatActivity {
                     MessageSend messageSend = new MessageSend(NAME_USER +" ha actualizado su foto de perfil",uri.toString(), NAME_USER, PHOTO_USER,"2", firebaseUser.getUid(),ServerValue.TIMESTAMP);
                     databaseReference.push().setValue(messageSend);
                     Glide.with(ActivityChat.this).load(uri.toString()).into(imageViewUserPhoto);
+                    uploadFotoUsuario(imageViewUserPhoto);
                 }
             });
         }
@@ -248,12 +239,81 @@ public class ActivityChat extends AppCompatActivity {
    @Override
     protected void onResume() {
         super.onResume();
-        if (firebaseUser !=null) {
-            textViewNameUser.setText(NAME_USER);
-            Glide.with(this).load(PHOTO_USER + "/picture?type=large").into(imageViewUserPhoto);
-        }
+       if(firebaseUser!=null){
+           floatingActionButtonSend.setEnabled(false);
+           DatabaseReference reference = database.getReference("Usuarios/"+firebaseUser.getUid());
+           reference.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   NAME_USER = firebaseUser.getDisplayName();
+                   textViewNameUser.setText(NAME_USER);
+                   Glide.with(ActivityChat.this).load(firebaseUser.getPhotoUrl() + "/picture?type=large").into(imageViewUserPhoto);
+
+
+              /*     User user = dataSnapshot.getValue(User.class);
+                   if (user.getName() == null){
+                       NAME_USER = firebaseUser.getDisplayName();
+                       textViewNameUser.setText(NAME_USER);
+                       Glide.with(ActivityChat.this).load(firebaseUser.getPhotoUrl() + "/picture?type=large").into(imageViewUserPhoto);
+
+                   }else {
+                       NAME_USER = user.getName();
+                       textViewNameUser.setText(NAME_USER);
+                       downloadImagenFirebaseUIFotoUsuario(imageViewUserPhoto);
+                   }
+                   textViewNameUser.setText(NAME_USER);*/
+                   floatingActionButtonSend.setEnabled(true);
+
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+           });
+    }else {
+           returnLogin();
+       }
+
+
+   }
+    private void returnLogin(){
+        startActivity(new Intent(ActivityChat.this, ActivityMainLogIn.class));
+        finish();
     }
 
+    public void uploadFotoUsuario(ImageView imageView) {
+        StorageReference storageReference = storage.getReference();
+        storageReference.child("fotosPerfilUsuarios").child(firebaseUser.getUid());
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
 
+        UploadTask uploadTask = storageReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(ActivityChat.this, "Upload Failure", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                Toast.makeText(ActivityChat.this, "Upload Succes", Toast.LENGTH_SHORT).show();
 
+                // ...
+            }
+        });
+    }
+    public void downloadImagenFirebaseUIFotoUsuario(ImageView imageView){
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        storageReference.child("fotosPerfilUsuarios").child(firebaseUser.getUid());
+        Glide.with(ActivityChat.this).using(new FirebaseImageLoader()).load(storageReference).into(imageView);
+
+    }
 }

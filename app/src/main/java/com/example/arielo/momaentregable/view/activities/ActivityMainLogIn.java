@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.arielo.momaentregable.R;
+import com.example.arielo.momaentregable.model.pojo.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -24,7 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-public class ActivityMainLogIn extends AppCompatActivity{
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class ActivityMainLogIn extends AppCompatActivity {
 
 
     private CallbackManager callbackManager;
@@ -32,6 +36,8 @@ public class ActivityMainLogIn extends AppCompatActivity{
     private EditText textViewEmail, textViewPassword;
     private Button buttonLogin, buttonSignIn;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class ActivityMainLogIn extends AppCompatActivity{
         buttonSignIn = findViewById(R.id.buttonSignIn);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
 
         loginButtonFacebook = findViewById(R.id.loginButtonFacebook);
         callbackManager = CallbackManager.Factory.create();
@@ -52,25 +59,25 @@ public class ActivityMainLogIn extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String correo = textViewEmail.getText().toString();
-                if(isValidEmail(correo) && validarContraseña()){
+                if (isValidEmail(correo) && validarContraseña()) {
                     String contraseña = textViewPassword.getText().toString();
                     firebaseAuth.signInWithEmailAndPassword(correo, contraseña)
                             .addOnCompleteListener(ActivityMainLogIn.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(ActivityMainLogIn.this, "Wellcome To...\n"+"  MOMA", Toast.LENGTH_SHORT).show();
+                                        // Sign in success, update UI with the signed-in firebaseUser's information
+                                        Toast.makeText(ActivityMainLogIn.this, "Wellcome To...\n" + "  MOMA", Toast.LENGTH_SHORT).show();
                                         iniciarActividadRecycler();
                                     } else {
-                                        // If sign in fails, display a message to the user.
+                                        // If sign in fails, display a message to the firebaseUser.
                                         Toast.makeText(ActivityMainLogIn.this, "Error, Email or Passwor incorrect.", Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
                             });
-                }else{
-                    Toast.makeText(ActivityMainLogIn.this, "User or Password Invalids.\n"+"\n" + "The password must be greater than six (6) Digits" , Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ActivityMainLogIn.this, "User or Password Invalids.\n" + "\n" + "The password must be greater than six (6) Digits", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -78,7 +85,7 @@ public class ActivityMainLogIn extends AppCompatActivity{
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ActivityMainLogIn.this,ActivitySignIn.class));
+                startActivity(new Intent(ActivityMainLogIn.this, ActivitySignIn.class));
             }
         });
 
@@ -94,13 +101,16 @@ public class ActivityMainLogIn extends AppCompatActivity{
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 handleFacebookAccessToken(loginResult.getAccessToken());
+               // guardarUsuarioFacebook();
                 iniciarActividadRecycler();
             }
+
             @Override
             public void onCancel() {
                 // App code
                 Toast.makeText(ActivityMainLogIn.this, "Log In Cancel", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onError(FacebookException exception) {
                 // App code
@@ -109,6 +119,7 @@ public class ActivityMainLogIn extends AppCompatActivity{
         });
         Token();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -134,8 +145,9 @@ public class ActivityMainLogIn extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            // Sign in success, update UI with the signed-in firebaseUser's information
+                            firebaseUser = firebaseAuth.getCurrentUser();
+
 
                         } else {
 
@@ -149,26 +161,38 @@ public class ActivityMainLogIn extends AppCompatActivity{
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    public boolean validarContraseña(){
+    public boolean validarContraseña() {
         String contraseña;
         contraseña = textViewPassword.getText().toString();
-        if(contraseña.length()>=6 && contraseña.length()<=16){
+        if (contraseña.length() >= 6 && contraseña.length() <= 16) {
             return true;
-        }else return false;
+        } else return false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if(currentUser!=null){
+        if (currentUser != null) {
             Toast.makeText(this, "User logeado.", Toast.LENGTH_SHORT).show();
             iniciarActividadRecycler();
         }
     }
 
-    private void iniciarActividadRecycler(){
-        startActivity(new Intent(ActivityMainLogIn.this,ActivityRecycler.class));
+    private void iniciarActividadRecycler() {
+        startActivity(new Intent(ActivityMainLogIn.this, ActivityRecycler.class));
     }
+
+    private void guardarUsuarioFacebook() {
+                            User user = new User();
+                            user.setEmail(firebaseUser.getEmail());
+                            user.setName(firebaseUser.getDisplayName());
+                            user.setPhoto(firebaseUser.getPhotoUrl().toString());
+                            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                            DatabaseReference databaseReference = firebaseDatabase.getReference("Usuarios/" + currentUser.getUid());
+                            databaseReference.setValue(user);
+                            finish();
+                    }
+
 }
 

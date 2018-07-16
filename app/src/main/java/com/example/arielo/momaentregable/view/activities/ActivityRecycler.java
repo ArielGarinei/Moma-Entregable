@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.arielo.momaentregable.R;
@@ -64,7 +65,12 @@ public class ActivityRecycler extends AppCompatActivity  implements FragmentRecy
 
                     break;
                 case R.id.itemChatOnline:
-                    startActivity(new Intent(ActivityRecycler.this,ActivityChat.class));
+                    if (usuarioActual.getDisplayName() != null){
+                        startActivity(new Intent(ActivityRecycler.this,ActivityChat.class));
+                    }else {
+                        Toast.makeText(ActivityRecycler.this, "DEBE LOGEARSE CON FACEBOOK PARA USAR EL CHAT", Toast.LENGTH_SHORT).show();
+                    }
+
             }
             drawerLayout.closeDrawers();
             return true;
